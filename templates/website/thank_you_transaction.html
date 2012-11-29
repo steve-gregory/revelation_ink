@@ -1,0 +1,42 @@
+{% extends "website/main.html" %}
+{% block ex_header %}
+  <script>
+    $().ready(function() {
+      $('#cart-cancel').click(function() {
+	window.location = '/'
+      });
+    });
+  </script>
+{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="span12">
+   <p> Thank you! Your transaction is complete. Please keep this transaction receipt for your records.</p>
+   <table class='table table-stripe'>
+     <thead>
+      <tr>
+        <th>Item Image</th>
+        <th>Item Description</th>
+        <th>Quantity</th>
+        <th>Total Price</th>
+      </tr>
+     </thead>
+     <tbody id='transaction-rows'>
+     {% for cart_item in cart_list %}
+      <tr>
+	<td><a href="#" class='thumbnail'><img src='{{ cart_item.image_url }}'></img></a></td>
+	<td>{{ cart_item.description }}</td>
+	<td>{{ cart_item.quantity }}</td>
+	<td>{{ cart_item.total}}</td>
+      </tr>
+     {% endfor %}
+       <tr class='total-row'>
+        <td colspan='3'>TOTAL:</td>
+        <td>{{cart_total}}</td>
+       </tr>
+     </tbody>
+   </table>
+   <button id='cart-cancel' class='btn btn-large btn-danger'>Return to Home Page</button>
+  </div>
+</div>
+{% endblock %}

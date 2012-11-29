@@ -1,0 +1,45 @@
+{% extends "website/main.html" %}
+{% block ex_header %}
+  <script>
+    $().ready(function() {
+      review_transaction();
+      $('#cart-confirm').click(function() {
+	window.location = '/cart/complete/';
+      });
+      $('#cart-cancel').click(function() {
+	window.location = '/';
+      });
+    });
+  </script>
+{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="span12">
+   <h3> Review Transaction</h3>
+   <p> Your transaction is not yet complete! Please confirm your order is correct and press Confirm Transaction</p>
+   <table class='table table-stripe'>
+     <thead>
+      <tr>
+        <th>Quantity</th>
+        <th>Item Image</th>
+        <th>Item Description</th>
+        <th>Price</th>
+        <th>Total</th>
+      </tr>
+     </thead>
+     <tbody id='review-transaction-rows'>
+       <tr class='total-row'>
+        <td colspan='3'>TOTAL:</td>
+        <td>{{cart_total}}</td>
+       </tr>
+     </tbody>
+   </table>
+  </div>
+</div>
+<div class="row">
+  <div class="span12">
+   <button id='cart-cancel' class='btn btn-inverse'>Cancel Transaction</button>
+   <button id='cart-confirm' class='btn btn-danger pull-right'>Confirm Transaction</button>
+  </div>
+</div>
+{% endblock %}

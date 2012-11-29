@@ -1,0 +1,108 @@
+{% extends "website/main.html" %}
+{% block ex_header %}
+<style>
+  .marked-down {
+    color: #F00;
+    text-decoration:line-through;
+  }
+
+  #filter-list div h6 {
+    color: red;
+  }
+
+  #filter-list div a {
+    color: white;
+    width: 100%;
+  }
+
+  #filter-list div .selected {
+    color: white;
+    font-weight : bold;
+  }
+  .thumbnail {
+    color: white;
+  }
+</style>
+<script>
+//Closest & Find
+  //Function to turn selected classes into a GET query
+/*
+$('a.selected').each(function(index) { console.log(this.text,$($(this).parents('.filter-category').children()[0]).text()); })
+
+*/
+  //Function to filter the list based on the GET query
+  $().ready(function() {
+    $('#filter-list div a').click(function(){
+      $(this).addClass('selected');
+      $(this).siblings().removeClass('selected');
+    });
+    $('.clothing-item').click(function() {
+        console.log('/shop/'+this.id);
+        window.location='/shop/'+this.id;
+      });
+
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="fluid-row">
+  <div class="span2">
+    <div id="filter-list" class="fluid-row" style="margin-bottom:40px;">
+     <div class="filter-category" id="filter-gender">
+      <h6>Gender</h6>
+      <div class="span11 offset1 btn-group-vertical">
+        <a class="" >Guys</a><br/>
+        <a class="" >Girls</a><br/>
+      </div><!-- end btn-group -->
+     </div>
+     <div class="filter-category" id="filter-price">
+      <h6>Price</h6>
+      <div class="span11 offset1 btn-group-vertical">
+        <a class="" >Under $20</a><br/>
+        <a class="" >$20 - $40</a><br/>
+        <a class="" >$40 and Up</a><br/>
+      </div><!-- end btn-group -->
+     </div>
+     <div class="filter-category" ="filter-shirts">
+      <h6>Clothing</h6>
+      <div class="span11 offset1 btn-group-vertical">
+        <a class="" >Tank Tops</a><br/>
+        <a class="" >T-Shirts</a><br/>
+        <a class="" >Long Sleeves</a><br/>
+        <a class="" >Hoodies</a><br/>
+      </div><!-- end btn-group -->
+     </div>
+     <div class="filter-category" class="" id="filter-size">
+      <h6>Size</h6>
+      <div class="span11 offset1 btn-group-vertical">
+       {% for size in size_list %}
+        <a class="" >{{size.name}}</a><br/>
+       {% endfor %}
+      </div><!-- end btn-group -->
+     </div>
+    </div>
+  </div><!-- End span2-->
+  <div class="span10">
+  {% if item_list %}
+    {% for item in item_list %}
+      {% if forloop.counter0|divisibleby:"3" %}<ul class="fluid-row thumbnails">{%endif%}
+      <li id='{{item.id}}' class="clothing-item span4 thumbnail">
+       <img src="{{ item.front.url }}" />
+       <p>{{ item.name }}<br/>
+       Price:
+       {% if item.markdownPrice != 0 %}
+         <span class="marked-down">${{ item.price|floatformat:2 }}</span> ${{ item.markdownPrice }}
+       {% else %}
+         ${{ item.price }}
+       {% endif %}
+       </p>
+      </li>
+      {% if forloop.last or forloop.counter|divisibleby:"3" %}</ul>{% endif %}
+    {% endfor %}
+  {% else %}
+    <p>No Items matched your search.</p>
+  {% endif %}
+  </div><!--End span10 -->
+</div><!--End fluid-row -->
+{% endblock %}

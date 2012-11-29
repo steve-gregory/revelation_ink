@@ -1,0 +1,63 @@
+{% extends "website/main.html" %}
+{% block ex_header %}
+<style>
+.form-horizontal .form-actions{
+	background-color:#333;
+}
+</style>
+<script>
+$(document).ready(function(){
+   $form = $('form');
+   $form.submit(function(){
+      var message_obj = {};
+      $(this).find('.controls input, .controls textarea').each(function() { 
+        key = this.id;
+        val = this.value;
+        message_obj[key] = val;
+      });
+      message_obj['csrfmiddlewaretoken'] = csrftoken;
+      $.post($(this).attr('action'), message_obj, function(response){
+            // do something here on success
+      },'json');
+      return false;
+   });
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="span2"></div>
+  <div class="span8">
+    <p>Contact Revelation Ink:</p>
+    <form action='/contact_form/' method='post' class="form-horizontal">
+      <fieldset>
+        <legend>Contact Revelation Ink Clothing Co.</legend>
+        <div class="control-group">
+          <label class="control-label" for="full-name">NAME</label>
+          <div class="controls">
+            <input type="text" class="input-xlarge" id="full-name" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="email">EMAIL</label>
+          <div class="controls">
+            <input type="text" class="input-xlarge" id="email" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="message">MESSAGE</label>
+          <div class="controls">
+            <textarea class="input-xlarge" id="message" rows="4"></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-danger">Send E-mail</button>
+          <button class="btn">Cancel</button>
+        </div>
+      {% csrf_token %}
+      </fieldset>
+    </form>
+  </div>
+  <div class="span2"></div>
+</div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "website/main.html" %}
+{% block ex_header %}
+<style>
+  .form-actions-inverse {
+    background-color:#333;
+  }
+  .marked-down {
+    color: #D00;
+    text-decoration:line-through;
+  }
+  #item-form-container , legend, .control-label {
+    color:white;
+  }
+</style>
+<script>
+  $().ready(function() {
+    $('form').submit(function(){
+      var id = {{ item.id }};
+      var name = "{{ item.name }}";
+      var csrf = $('input[name=csrfmiddlewaretoken]').val();
+      var price = $('#price-input').text().replace(/[ \n]/g,'');
+      var quantity = $('#quantity-select').val();
+      var size = $('#size-select').val();
+      var data_dict = {'id':id, 'name':name, 'quantity':quantity,'size':size, 'csrfmiddlewaretoken':csrf };
+      add_to_cart(data_dict);
+      $('#cart-modal').modal({'show':true});
+      return false;
+    });
+
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="fluid-row">
+  <div id='item-image-container' class='span6'>
+    <img src="{{ item.front_url }}" />
+    <!-- Like this shirt, tweet this shirt-->
+  </div><!--End item-image-container-->
+  <div id='item-form-container' class='span6'>
+    <form class="form-horizontal" >
+      <fieldset>
+        <legend> {{ item.name }}</legend>
+        {% if item.markdownPrice != 0 %}
+        <div class='control-group'>
+          <label class='control-label' for='originalprice-input'>Original Price</label>
+          <div class='controls'>
+            <span id='originalprice-input' class='marked-down'>
+            {{ item.markdownPrice }}
+            </span>
+          </div><!-- End controls -->
+        </div><!-- End control group-->
+        {% endif %}
+        <div class='control-group'>
+          {% if item.markdownPrice != 0 %}
+          <label class='control-label' for='price-input'>Sale Price</label>
+          {% else %}
+          <label class='control-label' for='price-input'>Price</label>
+          {% endif %}
+          <div class='controls'>
+            <div class="input-append">
+              <span class="add-on">$</span>
+              <span id="price-input" class='input-small uneditable-input' size="16" type="text">
+              {% if item.markdownPrice != 0 %}
+              {{ item.markdownPrice }}
+              {% else %}
+              {{ item.price }}
+              {% endif %}
+              </span>
+            </div>
+          </div><!-- End controls -->
+        </div><!-- End control group-->
+      <!-- Color selector -->
+      <!-- Size selector -->
+        {% if size_list %}
+        <div class='control-group'>
+          <label class='control-label' for='size-select'>Size</label>
+          <div class='controls'>
+            <select class='input-medium' id='size-select'>
+            {% for size in size_list %}
+              <option>{{ size.name }}</option>
+            {% endfor %}
+            </select>
+          </div><!-- End controls -->
+        </div><!-- End control group-->
+        {% endif %}
+      <!-- Quantity selector -->
+        {% if quantity_list %}
+        <div class='control-group'>
+          <label class='control-label' for='quantity-select'>Quantity</label>
+          <div class='controls'>
+            <select class='input-small' id='quantity-select'>
+            {% for i in quantity_list %}
+              <option>{{ i }}</option>
+            {% endfor %}
+            </select>
+          </div><!-- End controls -->
+        </div><!-- End control group-->
+        {% endif %}
+       <div class='form-actions form-actions-inverse'>
+         <button id='add-item-to-cart' type='submit' class='btn btn-danger'>Add To Cart</button>
+       </div>
+      {% csrf_token %}
+      </fieldset>
+    </form>
+    <p>${{ item.description }} </p>
+  </div><!--End item-form-container-->
+</div><!--End fluid-row -->
+{% endblock %}

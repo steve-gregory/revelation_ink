@@ -1,0 +1,100 @@
+{% extends "website/main.html" %}
+{% block ex_header %}
+<style>
+  .marked-down {
+    color: #F00;
+    text-decoration:line-through;
+  }
+
+  #filter-list div h6 {
+    color: red;
+  }
+
+  #filter-list div a {
+    color: black;
+    width: 100%;
+  }
+
+  #filter-list div .selected {
+    color: black;
+    font-weight : bold;
+  }
+
+</style>
+<script>
+  $().ready(function() {
+    $('#filter-list div a').click(function(){
+      $(this).addClass('selected');
+      $(this).siblings().removeClass('selected');
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="fluid-row">
+  <div class="span2">
+    <div id="filter-list" class="fluid-row" style="margin-bottom:40px;">
+     <div id="filter-price">
+      <h6>Price:</h6>
+      <div class="span11 offset1 btn-group-vertical">
+        <a class="" >Under $20</a><br/>
+        <a class="" >$20 - $40</a><br/>
+        <a class="" >$40 and Up</a><br/>
+      </div><!-- end btn-group -->
+     </div>
+     <div class="divider"></div><!-- end divider -->
+     <div class="" id="filter-shirts">
+      <h6>Clothing:</h6>
+      <div class="span11 offset1 btn-group-vertical">
+        <a class="" >Tank Tops</a><br/>
+        <a class="" >T-Shirts</a><br/>
+        <a class="" >Long Sleeves</a><br/>
+        <a class="" >Hoodies</a><br/>
+      </div><!-- end btn-group -->
+     </div>
+     <div class="divider"></div><!-- end divider -->
+     <div class="" id="filter-size">
+      <h6>Size:</h6>
+      <div class="span11 offset1 btn-group-vertical">
+       {% for size in size_list %}
+        <a class="" >{{size.name}}</a><br/>
+       {% endfor %}
+      </div><!-- end btn-group -->
+     </div>
+     <div class="divider"></div><!-- end divider -->
+     <div class=""><h6>Accessories:</h6></div><!-- end divider -->
+     <div class="divider"></div><!-- end divider -->
+     <div class="" id="filter-gender">
+      <div class="span11 offset1 btn-group-vertical">
+        <a class="" >Hats</a><br/>
+        <a class="" >Sunglasses</a><br/>
+        <a class="" >Stickers</a><br/>
+      </div><!-- end btn-group -->
+     </div>
+     <div class="divider"></div><!-- end divider -->
+    </div><!-- End fluid-row -->
+  </div><!-- End span2-->
+  <div class="span10">
+  {% if item_list %}
+    {% for item in item_list %}
+      {% if forloop.counter0|divisibleby:"3" %}<div class="fluid-row">{%endif%}
+      <div id='item-{{item.id}}' class="span4 thumbnail">
+       <img src="{{ item.front.url }}" />
+       <p>{{ item.name }}<br/>
+       Price:
+       {% if item.markdownPrice != 0 %}
+         <span class="marked-down">${{ item.price|floatformat:2 }}</span> ${{ item.markdownPrice }}
+       {% else %}
+         ${{ item.price }}
+       {% endif %}
+       </p>
+      </div>
+      {% if forloop.last or forloop.counter|divisibleby:"3" %}</div>{% endif %}
+    {% endfor %}
+  {% else %}
+    <p>No Items matched your search.</p>
+  {% endif %}
+  </div><!--End span10 -->
+</div><!--End fluid-row -->
+{% endblock %}
