@@ -20,7 +20,8 @@
     font-weight : bold;
   }
   .thumbnail {
-    color: white;
+    color: black;
+    font-size: 150%;
   }
 </style>
 <script>
@@ -46,47 +47,11 @@ $('a.selected').each(function(index) { console.log(this.text,$($(this).parents('
 {% endblock %}
 
 {% block content %}
-<div class="fluid-row">
-  <div class="span2">
-    <div id="filter-list" class="fluid-row" style="margin-bottom:40px;">
-     <div class="filter-category" id="filter-gender">
-      <h6>Gender</h6>
-      <div class="span11 offset1 btn-group-vertical">
-        <a class="" >Guys</a><br/>
-        <a class="" >Girls</a><br/>
-      </div><!-- end btn-group -->
-     </div>
-     <div class="filter-category" id="filter-price">
-      <h6>Price</h6>
-      <div class="span11 offset1 btn-group-vertical">
-        <a class="" >Under $20</a><br/>
-        <a class="" >$20 - $40</a><br/>
-        <a class="" >$40 and Up</a><br/>
-      </div><!-- end btn-group -->
-     </div>
-     <div class="filter-category" ="filter-shirts">
-      <h6>Clothing</h6>
-      <div class="span11 offset1 btn-group-vertical">
-        <a class="" >Tank Tops</a><br/>
-        <a class="" >T-Shirts</a><br/>
-        <a class="" >Long Sleeves</a><br/>
-        <a class="" >Hoodies</a><br/>
-      </div><!-- end btn-group -->
-     </div>
-     <div class="filter-category" class="" id="filter-size">
-      <h6>Size</h6>
-      <div class="span11 offset1 btn-group-vertical">
-       {% for size in size_list %}
-        <a class="" >{{size.name}}</a><br/>
-       {% endfor %}
-      </div><!-- end btn-group -->
-     </div>
-    </div>
-  </div><!-- End span2-->
-  <div class="span10">
+<div class="row-fluid">
+  <div class="span12">
   {% if item_list %}
     {% for item in item_list %}
-      {% if forloop.counter0|divisibleby:"3" %}<ul class="fluid-row thumbnails">{%endif%}
+      {% if forloop.counter0|divisibleby:"3" %}<ul class="row-fluid thumbnails">{%endif%}
       <li id='{{item.id}}' class="clothing-item span4 thumbnail">
        <img src="{{ item.front.url }}" />
        <p>{{ item.name }}<br/>
@@ -104,5 +69,5 @@ $('a.selected').each(function(index) { console.log(this.text,$($(this).parents('
     <p>No Items matched your search.</p>
   {% endif %}
   </div><!--End span10 -->
-</div><!--End fluid-row -->
+</div><!--End row-fluid -->
 {% endblock %}

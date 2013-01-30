@@ -1,6 +1,35 @@
 {% extends "website/main.html" %}
 
 {% block ex_header %}
+  <style>
+.stretch{
+/* Will stretch to specified width/height */
+  background-size: 200px 150px;
+}
+.stretch-content{
+/* Will stretch to width/height of element */
+  background-size: 100% 100%;
+}
+
+.resize-width{
+/* width: 150xp, height: auto to retain aspect ratio */
+  background-size: 150px Auto;
+}
+.resize-height{
+/* height: 150xp, width: auto to retain aspect ratio */
+  background-size: Auto 150px;
+}
+.resize-fill-and-clip{ 
+  /* Resize to fill and retain aspect ratio.
+     Will cause clipping if aspect ratio of box is different from image. */ 
+  background-size: cover;
+}
+.resize-best-fit{
+/* Resize to best fit and retain aspect ratio.
+   Will cause gap if aspect ratio of box is different from image. */ 
+  background-size: contain;
+}
+  </style>
   <script>
     $(function() {
 	$('.carousel').carousel()
@@ -9,22 +38,17 @@
 {% endblock %}
 
 {% block content %}
-<div id="myCarousel" class="carousel slide">
-  <!-- Carousel items -->
-  <div class="carousel-inner">
-    {% for image in image_list %}
-      {% if image == image_list|first %}
-      <div class="item active">
-      {% else %}
-      <div class="item">
-      {% endif %}
-        <img src="{{image}}" alt="Front page photo" width="100%"></img>
-      </div>
-    {% endfor %}
-  </div>
-  <!-- Carousel nav -->
-  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+<div class="row-fluid">
+    <div class="span6">
+        <a href='/shop/guys/'>
+            <img src="/static/img/revink_guys.png"/>
+        </a>
+    </div>
+    <div class="span6">
+        <a href='/shop/girls/'>
+            <img src="/static/img/revink_girls.png" />
+        </a>
+    </div>
 </div>
 
 {% endblock %}

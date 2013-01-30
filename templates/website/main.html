@@ -32,7 +32,10 @@
         background:url('/static/img/twitter-bird-16x16.png') 0 0;
       }
       body {
-        background-color: #333;
+        background: #FFF url('/static/img/background.png') no-repeat fixed center;
+        /* Resize to best fit and retain aspect ratio.
+        Will cause gap if aspect ratio of box is different from image. */ 
+        background-size: cover;
       }
       footer {
         color:white;
@@ -101,7 +104,6 @@
     <![endif]-->
   </head>
   <body>
-
     <div class='navbar navbar-inverse navbar-fixed-top'>
       <div class='navbar-inner'>
         <div class='container-fluid'>
@@ -133,11 +135,12 @@
       <div class='row-fluid'>
           <div id='nav-container' class='span12'>
             <ul class='nav nav-tabs center-tabs'>
-              <li id='menu1'><a href='/'><img src="/static/img/Home_button.png"/></a></li>
+              <li id='menu1'><a href='/'><img src="/static/img/Home_Button.png"/></a></li>
               <li id='menu2'><a href='/shop/'><img src="/static/img/Shop_Button.png"/></a></li>
-              <li id='menu3'><a href='/about/'><img src="/static/img/About_button.png"/></a></li>
-              <li id='menu4'><a href='/contact/'><img src="/static/img/Contact_button.png"/></a></li>
-              <li id='menu5'><a href='/social/'><img src="/static/img/Stores_button.png"/></a></li>
+              <li id='menu3'><a href='/about/'><img src="/static/img/About_Button.png"/></a></li>
+              <li id='menu4'><a href='/contact/'><img src="/static/img/Contact_Button.png"/></a></li>
+              <li id='menu5'><a href='/social/'><img src="/static/img/Where_To_Buy_Button.png"/></a></li>
+              <li id='menu6'><a href='/'><img src="/static/img/Talent_Button.png"/></a></li>
             </ul>
           </div><!--/row-->
       </div>
