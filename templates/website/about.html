@@ -6,30 +6,9 @@
 {% endblock %}
 
 {% block content %}
-<p> On the road to riches, some provide complication, your desperation and aspirations lead you to sophistication, plummeting you right back to simplification, home grown in sunny Tucson, AZ we are Revelation Ink Clothing Company... The road ahead is calling</p>
-<p>
-Started in 2010 Revelation Ink Clothing Company brings you 100% all natural designs, homegrown in sunny Tucson,AZ.
-</p>
-<p>Twitter: <a href='http://twitter.com/RiClothingCo'>@RiClothingCo</a></p>
-<p>Facebook: <a href='http://www.facebook.com/RevelationInkClothingCo'>www.facebook.com/RevelationInkClothingCo</a>
-<p>Instagram: <a href='http://instaweb.me/user/174673134'>RevInk10</a></p>
-<p>Revelation Ink Clothing Co.</p>
-</p>
-<div id="myCarousel" class="carousel slide">
-  <!-- Carousel items -->
-  <div class="carousel-inner">
-    {% for image in image_list %}
-      {% if image == image_list|first %}
-      <div class="item active">
-      {% else %}
-      <div class="item">
-      {% endif %}
-        <img src="{{image.url}}" alt="Front page photo" width="100%"></img>
-      </div>
-    {% endfor %}
+<div class='row-fluid'>
+  <div class='span12'>
+    <img src='/static/img/about_img.png'/>
   </div>
-  <!-- Carousel nav -->
-  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
 </div>
 {% endblock %}

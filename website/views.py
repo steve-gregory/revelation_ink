@@ -197,15 +197,27 @@ def shop_item_selected(request, item_id):
     logger.error(e)
     return HttpResponseRedirect('/shop/')
 
+def shop_guys(request):
+  items = Item.objects.filter(category__parent__name='Guys')
+  sizes = Size.objects.all()
+  return render_to_response('website/shop.html',
+  {
+    'item_list': items,
+    'size_list': sizes,
+  })
+def shop_girls(request):
+  items = Item.objects.filter(category__parent__name='Girls')
+  sizes = Size.objects.all()
+  return render_to_response('website/shop.html',
+  {
+    'item_list': items,
+    'size_list': sizes,
+  })
 def shop(request):
   gender = request.GET.get('gender',None)
   items = Item.objects.all()
   if gender:
     items = items.filter(gender=gender)
-  #if size:
-  #  items = items.filter(size=size)
-  #if price:
-  #  items = items.filter(price=price)
   sizes = Size.objects.all()
   return render_to_response('website/shop.html',
   {
@@ -232,6 +244,12 @@ def submit_contact_form(request):
   send_mail(subject, message, from_obj, [to_obj], fail_silently=False)
   logger.info("Message sent")
   return HttpResponse("");
+def talent_a_m_eyes(request):
+  return render_to_response('website/talent_a_m_eyes.html', {})
+def talent_cba(request):
+  return render_to_response('website/talent_cba.html', {})
+def talent_mttm(request):
+  return render_to_response('website/talent_mttm.html', {})
 
 def social(request):
   return render_to_response('website/social.html', {})

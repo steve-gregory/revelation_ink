@@ -1,3 +1,57 @@
+      /* Sticky footer styles
+      -------------------------------------------------- */
+
+      html,
+      body {
+        height: 100%;
+        /* The html and body elements cannot have any padding or margin. */
+      }
+
+      /* Wrapper for page content to push down footer */
+      #wrap {
+        padding:25px 0 0 0;
+        min-height: 100%;
+        height: auto !important;
+        height: 100%;
+        /* Negative indent footer by it's height */
+        margin: 0 auto -25px;
+      }
+
+      /* Set the fixed height of the footer here */
+      #push,
+      #footer {
+        height: 25px;
+      }
+      #footer {
+        background-color: #000;
+      }
+
+      /* Lastly, apply responsive CSS fixes as necessary */
+      @media (max-width: 767px) {
+        #footer {
+          margin-left: -20px;
+          margin-right: -20px;
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+
+
+
+      /* Custom page CSS
+      -------------------------------------------------- */
+      /* Not required for template or sticky footer method. */
+
+      .container {
+        width: auto;
+        max-width: 680px;
+      }
+      .container .credit {
+        margin: 20px 0;
+      }
+
+    
+/*
 html, body {
   height: 100%;
 }
@@ -22,7 +76,9 @@ footer a:hover {
 .push {
   height: 63px;
 }
-/* not required for sticky footer; just pushes hero down a bit */
+# not required for sticky footer; just pushes hero down a bit 
 .wrapper > .container {
   padding-top: 60px;
 }
+*/
+
