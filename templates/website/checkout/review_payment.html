@@ -20,7 +20,7 @@
 {% block content %}
 <div class="row-fluid" id='show-cart-frame'>
   <div class="span12">
-   <h3> Transaction Complete</h3>
+   <h3> Review Transaction</h3>
    <table class='table table-stripe'>
      <thead>
       <tr>
@@ -71,8 +71,33 @@
 </div>
 <div class="row-fluid">
   <div class="span12" id="review-info">
-   <p> Your transaction is complete! Keep this confirmation number for your records. </p>
-      <strong>{{ transaction_id }}</strong>
+   <p> Your transaction is not yet complete! Press 'Purchase Shopping Cart' to continue</p>
+    <form method='POST' action='.' >
+      <!--Show billing, shipping, last 4 of CC and that Info, ALL HIDDEN -->
+      {% for key, value in post_params.items %}
+        <input type="hidden" name="{{key}}" value="{{value}}">
+      {% endfor %}
+    <div class="row-fluid">
+      <div class="span4">
+      <strong>Your Shipping Information:</strong><br/>
+      {{ shipping.full_name }}<br/>
+      {{ shipping.address }}<br/>
+      </div>
+      <div class="span4">
+      <strong>Your Billing Information:</strong><br/>
+      {{ billing.full_name }}<br/>
+      {{ billing.address }}<br/>
+      </div>
+      {% if card %}
+      <div class="span4">
+      <strong>Your CreditCard Information:</strong><br/>
+      {{ card.full_name }}<br/>
+      {{ card.type }} ending in {{ card.last4 }}<br/> 
+      </div>
+      {% endif %}
+      <button type="submit" id='cart-cancel' name='submit' value='cancel' class='btn btn-inverse'>Return To Shopping</button>
+      <button type="submit" id='cart-confirm' name='submit' value='purchase' class='btn btn-success pull-right'>Purchase Shopping Cart</button>
+    </form>
   </div>
 </div>
 {% endblock %}

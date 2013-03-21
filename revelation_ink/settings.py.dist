@@ -128,9 +128,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    #'djangorestframework',
     'clothing',
     'website',
+    'rest_framework',
+    'paypal',
 
 )
 
@@ -177,3 +178,6 @@ PAYPAL_PASSWORD = ''
 PAYPAL_SIGNATURE = ''
 PAYPAL_DEBUG = False
 #NVP_API_ENDPOINT='https://api-3t.paypal.com/2.0/' 
+PAYPAL_STATE_TAX={
+	'AZ':0.091 #9.1 percent
+}

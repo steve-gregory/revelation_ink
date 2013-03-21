@@ -21,7 +21,6 @@ example use:
 """
 
 from __future__ import absolute_import
-#import revelation_ink
 import logging
 import os.path
 try:
@@ -44,7 +43,11 @@ def initialize(app_log_level, dep_log_level):
     """
     format = "%(asctime)s %(name)s-%(levelname)s [%(pathname)s %(funcName)s %(lineno)d] %(message)s"
     formatter = logging.Formatter(format)
-    log_file = '/home/dansmi541/rev-ink.com/revelation_ink/logs/app.log'
+    import revelation_ink
+    log_file = os.path.join(revelation_ink.__file__,
+			'..',
+			'..',
+			'logs/app.log')
 
     # Setup the root logging for dependencies, etc.
     logging.basicConfig(

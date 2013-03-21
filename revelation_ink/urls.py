@@ -18,12 +18,23 @@ urlpatterns = patterns('',
     #url(r'^api/item/(?P<item_id>.*)/$', Item.as_view()),
 
     url(r'^about/$', 'website.views.about', name='about'),
-    url(r'^cart/complete/$', 'website.views.completeTransaction', name='Cart Purchased'),
-    url(r'^cart/review/$', 'website.views.reviewTransaction', name='Purchase Cart'),
-    url(r'^cart/purchase/$', 'website.views.purchase_cart', name='Purchase Cart'),
+
+    url(r'^checkout/$', 'website.views.checkoutBegin', name='Checkout'),
+
+    #User sees the cart, can start the checkout purchase
+    url(r'^cart/show/$', 'website.views.show_cart', name='Show Cart'),
+    #User gives information
+    url(r'^checkout/collect/$', 'website.views.collect_billing_info', name='Collect card info'),
+    #User reviews information (POST ONLY)
+    url(r'^checkout/review/$', 'website.views.reviewTransaction', name='Cart Purchased'),
+    #User completed CC info
+    url(r'^checkout/complete$', 'website.views.purchase_complete', name='Checkout Completed'),
+
     url(r'^cart/$', 'website.views.get_cart', name='Add to cart'),
     url(r'^cart/update/$', 'website.views.update_cart', name='Add to cart'),
     url(r'^cart/add/$', 'website.views.add_to_cart', name='Add to cart'),
+
+
     url(r'^shop/guys/$', 'website.views.shop_guys', name='shop guys'),
     url(r'^shop/girls/$', 'website.views.shop_girls', name='shop girls'),
     url(r'^shop/$', 'website.views.shop', name='shop'),
