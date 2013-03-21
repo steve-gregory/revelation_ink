@@ -1,8 +1,11 @@
 {% extends "website/main.html" %}
 {% block ex_header %}
 <style>
+.body-container {
+    color: #fff;
+}
 .form-horizontal .form-actions{
-	background-color:#333;
+	background-color:inherit;
 }
 </style>
 <script>
@@ -26,12 +29,11 @@ $(document).ready(function(){
 {% endblock %}
 {% block content %}
 <div class="row">
-  <div class="span2"></div>
-  <div class="span8">
-    <p>Contact Revelation Ink:</p>
+  <div class="span12">
+    <img src="/static/img/Contact_Header.png" class=''/>
     <form action='/contact_form/' method='post' class="form-horizontal">
       <fieldset>
-        <legend>Contact Revelation Ink Clothing Co.</legend>
+        <legend></legend>
         <div class="control-group">
           <label class="control-label" for="full-name">NAME</label>
           <div class="controls">
@@ -58,6 +60,5 @@ $(document).ready(function(){
       </fieldset>
     </form>
   </div>
-  <div class="span2"></div>
 </div>
 {% endblock %}

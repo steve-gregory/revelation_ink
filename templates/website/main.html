@@ -154,6 +154,13 @@
       </div>
     </div>
     <div id='wrap' class='container-fluid'>
+      {% if paypal_debug %}
+      <div class='row-fluid'>
+          <div id='logo-container' class='span12 center-container'>
+            <p style="font-family:'Times New Roman', Times, serif; font-size:35px; color:red">WARNING: Paypal has been disabled, while the website is under construction. Please check back later today </p>
+          </div>
+      </div>
+      {% endif %}
       <div class='row-fluid'>
           <div id='logo-container' class='span12 center-container'>
               <a href='/'><img src='/static/img/header.png' alt='Rev-Ink Header Logo'/></a>
@@ -172,11 +179,12 @@
                 </ul>
               <li id='menu3'><a href='/about/'><img src="/static/img/About_Button.png"/></a></li>
               <li id='menu4'><a href='/contact/'><img src="/static/img/Contact_Button.png"/></a></li>
-              <li id='menu5'><a href='/social/'><img src="/static/img/Where_To_Buy_Button.png"/></a></li>
+              <li id='menu5'><a href='/where_to_buy/'><img src="/static/img/Where_To_Buy_Button.png"/></a></li>
               <li class='dropdown' id='menu6'>
                 <!--<a href='/'><img src="/static/img/Talent_Button.png"/></a>-->
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img src="/static/img/Talent_Button.png"/></a>
                 <ul class='dropdown-menu'>
+                    <li><a href='/talent/joe_smith/'><img src="/static/img/dropdown_joe_smith.png"/></a></li>
                     <li><a href='/talent/a_m_eyes/'><img src="/static/img/dropdown_a_m_eyes.png"/></a></li>
                     <li><a href='/talent/cba/'><img src="/static/img/dropdown_cba.png"/></a></li>
                     <li><a href='/talent/mttm/'><img src="/static/img/dropdown_mttm.png"/></a></li>

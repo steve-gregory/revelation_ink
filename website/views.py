@@ -16,16 +16,11 @@ def backbone_ex(request):
 def home(request):
   photos = FrontPagePhoto.objects.order_by('weight')
   image_list = [p.image.url for p in photos] 
-  girlsFeatured = map(lambda item: item.front.url, Item.objects.filter(featured=True, category__parent__name='Girls'))
-  guysFeatured =  map(lambda item: item.front.url, Item.objects.filter(featured=True, category__parent__name='Guys'))
-  #for image in girlsFeatured:
-  #  image_list.insert(0, image)
-  #for image in guysFeatured:
-  #  image_list.insert(3, image)
   logger.debug(image_list)
   return render_to_response('website/index.html', 
     {
       'image_list' : image_list,
+      'paypal_debug' : settings.PAYPAL_DEBUG,
     })
 
 def about(request):
@@ -34,6 +29,7 @@ def about(request):
   return render_to_response('website/about.html', 
     {
       'image_list' : image_list,
+      'paypal_debug' : settings.PAYPAL_DEBUG,
     })
 
 def get_cart(request):
@@ -104,6 +100,7 @@ def reviewTransaction(request):
     {
       'cart_list' : cart_list,
       'cart_total' : '%.2f' % round(cartTotal,2),
+      'paypal_debug' : settings.PAYPAL_DEBUG,
     })
   #Show modal dialog on its own screen
   #On "OKAY" click 'DoExpressCheckoutPayment'
@@ -138,7 +135,8 @@ def completeTransaction(request):
   return render_to_response('website/thank_you_transaction.html',
 	{
 	  'cart_list' : cart_list,
-	  'cart_total' : '%.2f' % round(cartTotal,2)
+	  'cart_total' : '%.2f' % round(cartTotal,2),
+    'paypal_debug' : settings.PAYPAL_DEBUG,
 	})
 
 def update_cart(request):
@@ -183,12 +181,13 @@ def add_to_cart(request):
 def shop_item_selected(request, item_id):
   try:
     item = Item.objects.get(id=item_id)
-    size_list = item.quantity.all()
+    size_list = item.quantity.order_by('id')
     logger.info(item)
     jsonDict = {
       'item':item.json(),
       'size_list': size_list,
       'quantity_list': range(1,11), 
+      'paypal_debug' : settings.PAYPAL_DEBUG,
     }
     jsonDict.update(csrf(request))
     logger.debug(jsonDict)
@@ -204,6 +203,7 @@ def shop_guys(request):
   {
     'item_list': items,
     'size_list': sizes,
+    'paypal_debug' : settings.PAYPAL_DEBUG,
   })
 def shop_girls(request):
   items = Item.objects.filter(category__parent__name='Girls')
@@ -212,6 +212,7 @@ def shop_girls(request):
   {
     'item_list': items,
     'size_list': sizes,
+    'paypal_debug' : settings.PAYPAL_DEBUG,
   })
 def shop(request):
   gender = request.GET.get('gender',None)
@@ -223,36 +224,40 @@ def shop(request):
   {
     'item_list': items,
     'size_list': sizes,
+    'paypal_debug' : settings.PAYPAL_DEBUG,
   })
 
 def contact(request):
-  jsonDict = {}
+  jsonDict = {
+    'paypal_debug' : settings.PAYPAL_DEBUG,
+  }
   jsonDict.update(csrf(request))
   return render_to_response('website/contact.html', jsonDict)
 
-def submit_contact_form(request):
-  from django.core.mail import send_mail
-
-  fromsender= request.POST['full-name']
-  fromemail = request.POST['email']
-  from_obj = "%s <%s>" % (fromsender,fromemail)
-  toemail = settings.ADMINS[0][0]
-  toname = settings.ADMINS[0][1]
-  to_obj = "%s <%s>" % (toname,toemail)
-  subject = "Contact form filled out"
-  message = "%s" % request.POST['message']
-  send_mail(subject, message, from_obj, [to_obj], fail_silently=False)
-  logger.info("Message sent")
-  return HttpResponse("");
 def talent_a_m_eyes(request):
-  return render_to_response('website/talent_a_m_eyes.html', {})
+  return render_to_response('website/talent_a_m_eyes.html', {
+    'paypal_debug' : settings.PAYPAL_DEBUG,
+  })
 def talent_cba(request):
-  return render_to_response('website/talent_cba.html', {})
+  return render_to_response('website/talent_cba.html', {
+    'paypal_debug' : settings.PAYPAL_DEBUG,
+  })
 def talent_mttm(request):
-  return render_to_response('website/talent_mttm.html', {})
+  return render_to_response('website/talent_mttm.html', {
+    'paypal_debug' : settings.PAYPAL_DEBUG,
+  })
+def talent_joe_smith(request):
+  return render_to_response('website/talent_joe_smith.html', {
+    'paypal_debug' : settings.PAYPAL_DEBUG,
+  })
 
-def social(request):
-  return render_to_response('website/social.html', {})
+
+def where_to_buy(request):
+  return render_to_response('website/where_to_buy.html', {
+    'paypal_debug' : settings.PAYPAL_DEBUG,
+  })
 
 def ttr_bs(request):
-  return render_to_response('website/main_bs.html', {})
+  return render_to_response('website/main_bs.html', {
+    'paypal_debug' : settings.PAYPAL_DEBUG,
+  })

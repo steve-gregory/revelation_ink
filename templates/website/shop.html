@@ -54,6 +54,7 @@ $('a.selected').each(function(index) { console.log(this.text,$($(this).parents('
       {% if forloop.counter0|divisibleby:"3" %}<ul class="row-fluid thumbnails">{%endif%}
       <li id='{{item.id}}' class="clothing-item span4 thumbnail">
        <img src="{{ item.front.url }}" />
+        <!--
        <p>{{ item.name }}<br/>
        Price:
        {% if item.markdownPrice != 0 %}
@@ -62,6 +63,7 @@ $('a.selected').each(function(index) { console.log(this.text,$($(this).parents('
          ${{ item.price }}
        {% endif %}
        </p>
+        -->
       </li>
       {% if forloop.last or forloop.counter|divisibleby:"3" %}</ul>{% endif %}
     {% endfor %}
