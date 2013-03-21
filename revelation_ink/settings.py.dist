@@ -178,3 +178,6 @@ PAYPAL_PASSWORD = ''
 PAYPAL_SIGNATURE = ''
 PAYPAL_DEBUG = False
 #NVP_API_ENDPOINT='https://api-3t.paypal.com/2.0/' 
+PAYPAL_STATE_TAX={
+	'AZ':0.091 #9.1 percent
+}

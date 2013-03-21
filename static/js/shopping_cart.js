@@ -84,6 +84,30 @@ var refresh_cart = function() {
     });
   });
 };
+var show_transaction = function() {
+  $.getJSON('/cart/', function(cartItems) {
+    console.log(cartItems);
+    var item_list = [];
+    shoppingCartArr = [];
+    $.each(cartItems, function(index) {
+      var item = cartItems[index];
+      var totalprice = (item.price * item.quantity).toFixed(2);
+      console.log(item);
+      shoppingCartArr.push(item);
+      item_list.push
+       ('<tr class="cart-item" id="'+index+'">'+
+         '<td>'+
+          '<input readonly="readonly" class="input-small cart-item-quantity" min="0" max="10" step="1" type="number" value="'+item.quantity+'"></input>'+
+         '</td>'+
+         '<td><img class="thumbnail" src="'+item.image_url+'"/></td>'+
+         '<td>'+item.name+'<br/>Size:'+item.size+'<br/>'+item.description+'</td>'+
+         '<td class="cart-item-price">'+item.price+'</td>'+
+         '<td class="cart-item-total">'+totalprice+'</td>'+
+       '</tr>');
+    });
+    $('#review-transaction-rows').prepend(item_list.join(''));
+  });
+};
 var review_transaction = function() {
   $.getJSON('/cart/', function(cartItems) {
     console.log(cartItems);

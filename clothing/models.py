@@ -120,6 +120,8 @@ class Transaction(models.Model):
   full_name = models.CharField(max_length=255)
   email = models.CharField(max_length=255)
   shipping_info = models.TextField()
+  billing_info = models.TextField()
+  confirmation_id = models.CharField(max_length=255)
   shipped = models.BooleanField(default=False)
   def __unicode__(self):
     return "%s for: %s Shipped:%s" % (self.items_sold.all(), self.full_name,self.shipped)
