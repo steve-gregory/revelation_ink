@@ -66,13 +66,18 @@ def collect_billing_info(request):
   return render_to_response('website/checkout/billing_info.html', c)
   
 def getCardArgs(querydict, *args, **kwargs):
+  if len(querydict['fullname-card']) > 0 and len( querydict['fullname-card'].split(' ',1) ) > 1:
+    first_name = querydict['fullname-card'].split(' ',1)[0]
+    last_name = querydict['fullname-card'].split(' ',1)[1]
+  else:
+    first_name,last_name = '',''
   return {
     'acct':querydict['ccnumber-card'],
     'expdate':'%s%s' % (querydict['month-expire-card'],querydict['year-expire-card']),
     'cvv2':querydict['cvn-card'],
     'cardtype':querydict['type-card'],
-    'first_name':querydict['fullname-card'].split(' ',1)[0],
-    'last_name':querydict['fullname-card'].split(' ',1)[1],
+    'first_name':first_name,
+    'last_name':last_name,
   } 
 """
 {
@@ -173,37 +178,49 @@ def getCartList(request):
 	'description': item.description,
 	})
   return (cart_list,cartTotal)
+#Dead Paypal v1 shit
+#def reviewTransaction(request):
+#  logger.info(request)
+#  (cart_list,cartTotal) = getCartList(request)
+#  request.session['paypal_PayerID'] = request.GET['PayerID']
+#  request.session['paypal_token'] = request.GET['token']
+#  return render_to_response('website/review_transaction.html', 
+#    {
+#      'cart_list' : cart_list,
+#      'cart_total' : '%.2f' % round(cartTotal,2),
+#      'paypal_debug' : settings.PAYPAL_DEBUG,
+#    })
+#  #Show modal dialog on its own screen
+#  #On "OKAY" click 'DoExpressCheckoutPayment'
+#
+#def completeTransaction(request):
+#  logger.info(request)
+#  #Clear the cart
+#  (cart_list,cartTotal) = getCartList(request)
+#  p = PayPal()
+#  cartTotal = request.session['paypal_total']
+#  p.DoExpressCheckoutPayment("USD", "%.2f" % round(cartTotal,2), request.session['paypal_token'], request.session['paypal_PayerID'])
+#  #Test 'status == ok'
+#  #Create a new transaction
+#  p.GetExpressCheckoutDetails(settings.SERVER_URL+'cart/review/', settings.SERVER_URL, request.session['paypal_token'])
+#  name = '%s %s' % (p.api_response['FIRSTNAME'],p.api_response['LASTNAME'])
+#  email = p.api_response['EMAIL']
+#  #'Address\n\nTucson,AZ 85704'
+#  address = '%s\n%s\n%s,%s %s' % (p.api_response.get('SHIPTOSTREET','No Street Info'), p.api_response.get('SHIPTOSTREET2',''), p.api_response.get('SHIPTOCITY','No City'), p.api_response.get('SHIPTOSTATE','NoState'), p.api_response.get('SHIPTOZIP','No ZIP'))
+#  #Remove the cart and paypal variables
+#  transaction = Transaction(full_name=name, email=email, shipping_info=address)
+#  transaction.save()
+#  for list_item in cart_list:
+#    item = Item.objects.get(id=list_item['id'])
+#    size = Size.objects.get(name=list_item['size'])
+#    sold_item = StockSold(item=item, size=size, count=list_item['quantity'])
+#    sold_item.save()
+#    transaction.items_sold.add(sold_item)
+#  return transaction.confirmation_id
 
-def reviewTransaction(request):
-  logger.info(request)
-  (cart_list,cartTotal) = getCartList(request)
-  request.session['paypal_PayerID'] = request.GET['PayerID']
-  request.session['paypal_token'] = request.GET['token']
-  return render_to_response('website/review_transaction.html', 
-    {
-      'cart_list' : cart_list,
-      'cart_total' : '%.2f' % round(cartTotal,2),
-      'paypal_debug' : settings.PAYPAL_DEBUG,
-    })
-  #Show modal dialog on its own screen
-  #On "OKAY" click 'DoExpressCheckoutPayment'
-
-def completeTransaction(request):
-  logger.info(request)
-  #Clear the cart
-  (cart_list,cartTotal) = getCartList(request)
-  p = PayPal()
-  cartTotal = request.session['paypal_total']
-  p.DoExpressCheckoutPayment("USD", "%.2f" % round(cartTotal,2), request.session['paypal_token'], request.session['paypal_PayerID'])
-  #Test 'status == ok'
-  #Create a new transaction
-  p.GetExpressCheckoutDetails(settings.SERVER_URL+'cart/review/', settings.SERVER_URL, request.session['paypal_token'])
-  name = '%s %s' % (p.api_response['FIRSTNAME'],p.api_response['LASTNAME'])
-  email = p.api_response['EMAIL']
-  #'Address\n\nTucson,AZ 85704'
-  address = '%s\n%s\n%s,%s %s' % (p.api_response.get('SHIPTOSTREET','No Street Info'), p.api_response.get('SHIPTOSTREET2',''), p.api_response.get('SHIPTOCITY','No City'), p.api_response.get('SHIPTOSTATE','NoState'), p.api_response.get('SHIPTOZIP','No ZIP'))
-  #Remove the cart and paypal variables
-  transaction = Transaction(full_name=name, email=email, shipping_info=address)
+def make_transaction(full_name, email, shipping_addr, billing_addr, cart_list):
+  transaction = Transaction(full_name=full_name, email=email, shipping_info=shipping_addr, billing_info=billing_addr)
+  transaction.confirmation_id = uuid.uuid4()
   transaction.save()
   for list_item in cart_list:
     item = Item.objects.get(id=list_item['id'])
@@ -212,6 +229,7 @@ def completeTransaction(request):
     sold_item.save()
     transaction.items_sold.add(sold_item)
   return transaction.confirmation_id
+
 
 def reviewTransaction(request):
   """
@@ -237,7 +255,7 @@ def reviewTransaction(request):
 def show_review_page(request):
     (cart_list,pretax_total, tax, tax_amount, total) = get_cart_details(request)
     card_args = getCardArgs(request.POST)
-    card_args['last4'] = card_args['acct'][-4:] if len(card_args['acct']) > 4 else '',
+    card_args['last4'] = card_args['acct'][-4:] if len(card_args['acct']) > 4 else ''
     billing_args = getBillingArgs(request.POST)
     shipping_args = getShippingArgs(request.POST, billing_args)
     billing_full_name = '%s %s' % (billing_args['first_name'], billing_args['last_name'])
@@ -245,6 +263,8 @@ def show_review_page(request):
     shipping_full_name = '%s %s' % (shipping_args['first_name'], shipping_args['last_name'])
     shipping_addr = '%s\n%s,%s %s' % (shipping_args['street'], shipping_args['city'], shipping_args['state'], shipping_args['zip'])
     card_full_name = '%s %s' % (card_args['first_name'], card_args['last_name'])
+    logger.warn(card_full_name)
+    logger.warn(card_args['last4'])
     c = RequestContext(request, {
         'shipping' : {
             'full_name': shipping_full_name,
@@ -420,7 +440,7 @@ def shop_item_selected(request, item_id):
     return HttpResponseRedirect('/shop/')
 
 def shop_guys(request):
-  items = Item.objects.filter(category__parent__name='Guys')
+  items = Item.objects.filter(category__parent__name='Guys', shown=True)
   sizes = Size.objects.all()
   return render_to_response('website/shop.html',
   {
@@ -430,7 +450,7 @@ def shop_guys(request):
     'paypal_debug' : settings.PAYPAL_DEBUG,
   })
 def shop_girls(request):
-  items = Item.objects.filter(category__parent__name='Girls')
+  items = Item.objects.filter(category__parent__name='Girls', shown=True)
   sizes = Size.objects.all()
   return render_to_response('website/shop.html',
   {

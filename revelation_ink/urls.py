@@ -19,8 +19,6 @@ urlpatterns = patterns('',
 
     url(r'^about/$', 'website.views.about', name='about'),
 
-    url(r'^checkout/$', 'website.views.checkoutBegin', name='Checkout'),
-
     #User sees the cart, can start the checkout purchase
     url(r'^cart/show/$', 'website.views.show_cart', name='Show Cart'),
     #User gives information
