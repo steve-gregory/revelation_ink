@@ -21,6 +21,14 @@
 <div class="row-fluid" id='show-cart-frame'>
   <div class="span12">
    <h3> Review Transaction</h3>
+   {% if validation_errors %}
+   <div class='alert alert-error'>
+   Validation Failed! See errors below:</br>
+    {% for error in validation_errors %}
+      {{ error }}</br>
+    {% endfor %}
+   </div>
+   {% endif %}
    <table class='table table-stripe'>
      <thead>
       <tr>
@@ -82,11 +90,13 @@
       <strong>Your Shipping Information:</strong><br/>
       {{ shipping.full_name }}<br/>
       {{ shipping.address }}<br/>
+      {{ shipping.email }}<br/>
       </div>
       <div class="span4">
       <strong>Your Billing Information:</strong><br/>
       {{ billing.full_name }}<br/>
       {{ billing.address }}<br/>
+      {{ billing.email }}<br/>
       </div>
       {% if card %}
       <div class="span4">
