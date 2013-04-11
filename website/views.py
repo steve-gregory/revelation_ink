@@ -124,7 +124,7 @@ def getShippingArgs(querydict, billing_args):
   """
   Get shipping args (Use billing if missing..)
   """
-  if 'yes' in querydict.get('ship_to_billing'):
+  if 'yes' in querydict.get('ship_to_billing',[]):
     return copy.copy(billing_args)
 
   return {
@@ -149,7 +149,7 @@ def purchase_complete(request):
   logger.warn(card_args)
   logger.warn(billing_args)
   p = PayPal()
-  p.DoDirectPayment(*card_args, **billing_args)
+  result = p.DoDirectPayment(*card_args, **billing_args)
   #Update the order to show payment went through
   #show the entire order on the next page
   return render_to_response('website/cart_purchased.html', 
@@ -255,7 +255,7 @@ def reviewTransaction(request):
   #Show modal dialog on its own screen
   #On "OKAY" click 'DoExpressCheckoutPayment'
 
-def show_review_page(request):
+def show_review_page(request, errors=[]):
     (cart_list,pretax_total, tax, tax_amount, shipping_amount, total) = get_cart_details(request)
     card_args = getCardArgs(request.POST)
     card_args['last4'] = card_args['acct'][-4:] if len(card_args['acct']) > 4 else ''
@@ -266,8 +266,10 @@ def show_review_page(request):
     shipping_full_name = '%s %s' % (shipping_args['first_name'], shipping_args['last_name'])
     shipping_addr = '%s\n%s,%s %s' % (shipping_args['street'], shipping_args['city'], shipping_args['state'], shipping_args['zip'])
     card_full_name = '%s %s' % (card_args['first_name'], card_args['last_name'])
-    logger.warn(card_full_name)
-    logger.warn(card_args['last4'])
+    logger.info(card_full_name)
+    logger.info(card_args['last4'])
+    logger.info(shipping_args['email'])
+    logger.info(billing_args['email'])
     c = RequestContext(request, {
         'shipping' : {
             'full_name': shipping_full_name,
@@ -292,6 +294,7 @@ def show_review_page(request):
         'cart_tax_total' : '%.2f' % round(tax_amount,2),
         'shipping_total' : '%.2f' % round(shipping_amount,2),
         'cart_total' : '%.2f' % round(total,2),
+        'validation_errors': errors,
         })
     return render_to_response('website/checkout/review_payment.html', c)
 
@@ -301,8 +304,15 @@ def make_purchase(request):
     billing_args = getBillingArgs(request.POST)
     shipping_args = getShippingArgs(request.POST, billing_args)
 
-    last_name = billing_args.pop('last_name')
+    error_list = []
+
     first_name = billing_args.pop('first_name')
+    if not first_name:
+        error_list.append("First name missing from billing addresss")
+
+    last_name = billing_args.pop('last_name')
+    if not last_name:
+        error_list.append("Last name missing from billing addresss")
 
     card_args['amount'] = Decimal(total)
     billing_args['ipaddress'] = request.META['REMOTE_ADDR']
@@ -311,10 +321,18 @@ def make_purchase(request):
     billing_addr = '%s\n%s,%s %s' % (billing_args['street'], billing_args['city'], billing_args['state'], billing_args['zip'])
     shipping_addr = '%s\n%s,%s %s' % (shipping_args['street'], shipping_args['city'], shipping_args['state'], shipping_args['zip'])
     email = shipping_args['email']
+    if not email:
+        error_list.append("Please enter an e-mail address")
 
     p = PayPal()
     card_tuple = (card_args['acct'], card_args['expdate'], card_args['cvv2'], card_args['cardtype'], card_args['first_name'], card_args['last_name'], card_args['amount'])
-    p.DoDirectPayment(*card_tuple, **billing_args)
+    if error_list:
+        return show_review_page(request, errors=error_list)
+
+    result = p.DoDirectPayment(*card_tuple, **billing_args)
+    if not result:
+        error_list.append('Your Credit Card was not accepted! Please review your information and try again.')
+        return show_review_page(request, errors=error_list)
     confirm_id = make_transaction(full_name, email, shipping_addr, billing_addr, cart_list)
     #send_confirmation_email(full_name, email)
     params = {
@@ -528,6 +546,8 @@ def get_shipping_total(cart_list):
   """
   Charge shipping based on # of cart list
   """
+  if not cart_list:
+    return 0.0
   item_count = len(cart_list)
   if item_count > 20:
     return 21.0
