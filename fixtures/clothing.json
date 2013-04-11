@@ -1,0 +1,668 @@
+[
+  {
+    "pk": 1, 
+    "model": "clothing.size", 
+    "fields": {
+      "name": "Small"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "clothing.size", 
+    "fields": {
+      "name": "Medium"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "clothing.size", 
+    "fields": {
+      "name": "Large"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "clothing.size", 
+    "fields": {
+      "name": "XLarge"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "clothing.size", 
+    "fields": {
+      "name": "XXLarge"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "clothing.category", 
+    "fields": {
+      "name": "Guys", 
+      "parent": null
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "clothing.category", 
+    "fields": {
+      "name": "Girls", 
+      "parent": null
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "clothing.category", 
+    "fields": {
+      "name": "T-Shirts", 
+      "parent": 1
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "clothing.category", 
+    "fields": {
+      "name": "T-Shirts", 
+      "parent": 2
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "clothing.category", 
+    "fields": {
+      "name": "Tank-Tops", 
+      "parent": 1
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "clothing.category", 
+    "fields": {
+      "name": "Tank-Tops", 
+      "parent": 2
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "clothing.category", 
+    "fields": {
+      "name": "Long Sleeve", 
+      "parent": 2
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "clothing.item", 
+    "fields": {
+      "category": 3, 
+      "sku": "1", 
+      "shown": true, 
+      "name": "Blue Skull Wings", 
+      "price": "30", 
+      "description": "4.5oz 100% pre-shrunk ring-spun cotton tee shirt with screenprint design. By Revelation Ink Clothing Co. \r\n", 
+      "back": "", 
+      "featured": false, 
+      "featured_image": "uploads/clothes/Blue Skull Wings_featured.png", 
+      "front": "uploads/clothes/Blue Skull Wings_front.png", 
+      "markdownPrice": "19.99"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "clothing.item", 
+    "fields": {
+      "category": 7, 
+      "sku": "2", 
+      "shown": true, 
+      "name": "Anchored", 
+      "price": "35", 
+      "description": "4.5oz 100% pre-shrunk ring-spun cotton long sleeve shirt with screenprint design. \r\n\r\nBy Revelation Ink Clothing Co. \r\n", 
+      "back": "", 
+      "featured": true, 
+      "featured_image": "uploads/clothes/Anchored_featured.png", 
+      "front": "uploads/clothes/Anchored_front.png", 
+      "markdownPrice": "24.99"
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "clothing.item", 
+    "fields": {
+      "category": 6, 
+      "sku": "3", 
+      "shown": true, 
+      "name": "Lotus Dreams", 
+      "price": "35", 
+      "description": "4.5oz 100% pre-shrunk ring-spun cotton tank top shirt with screenprint design. \r\n\r\nBy Revelation Ink Clothing Co. \r\n", 
+      "back": "", 
+      "featured": false, 
+      "featured_image": "uploads/clothes/Lotus Dreams_featured.png", 
+      "front": "uploads/clothes/Lotus Dreams_front.png", 
+      "markdownPrice": "24.99"
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "clothing.item", 
+    "fields": {
+      "category": 6, 
+      "sku": "4", 
+      "shown": true, 
+      "name": "Purple Skull Wings", 
+      "price": "35", 
+      "description": "4.5oz 100% pre-shrunk ring-spun cotton tank top shirt with screenprint design. \r\n\r\nBy Revelation Ink Clothing Co. \r\n", 
+      "back": "", 
+      "featured": false, 
+      "featured_image": "uploads/clothes/Purple Skull Wings_featured.png", 
+      "front": "uploads/clothes/Purple Skull Wings_front.png", 
+      "markdownPrice": "24.99"
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "clothing.item", 
+    "fields": {
+      "category": 3, 
+      "sku": "5", 
+      "shown": true, 
+      "name": "Neckline", 
+      "price": "30", 
+      "description": "4.5oz 100% pre-shrunk ring-spun cotton tee shirt with screenprint design. \r\n\r\nBy Revelation Ink Clothing Co. \r\n", 
+      "back": "", 
+      "featured": false, 
+      "featured_image": "uploads/clothes/Neckline_featured.png", 
+      "front": "uploads/clothes/Neckline_front.png", 
+      "markdownPrice": "19.99"
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "clothing.item", 
+    "fields": {
+      "category": 3, 
+      "sku": "6", 
+      "shown": true, 
+      "name": "Purple Splatter", 
+      "price": "30", 
+      "description": "4.5oz 100% pre-shrunk ring-spun cotton tee shirt with screenprint design. \r\n\r\nBy Revelation Ink Clothing Co. \r\n", 
+      "back": "", 
+      "featured": true, 
+      "featured_image": "uploads/clothes/Purple Splatter_featured.png", 
+      "front": "uploads/clothes/Purple Splatter_front.png", 
+      "markdownPrice": "19.99"
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "clothing.item", 
+    "fields": {
+      "category": 3, 
+      "sku": "7", 
+      "shown": true, 
+      "name": "Skull Rose", 
+      "price": "30", 
+      "description": "4.5oz 100% pre-shrunk ring-spun cotton tee shirt with screenprint design. \r\n\r\nBy Revelation Ink Clothing Co. \r\n", 
+      "back": "", 
+      "featured": false, 
+      "featured_image": "uploads/clothes/Skull Rose_featured.png", 
+      "front": "uploads/clothes/Skull Rose_front.png", 
+      "markdownPrice": "19.99"
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "clothing.item", 
+    "fields": {
+      "category": 5, 
+      "sku": "8", 
+      "shown": true, 
+      "name": "Sports Tank", 
+      "price": "30", 
+      "description": "4.5oz 100% pre-shrunk ring-spun cotton tank top shirt with screenprint design. \r\n\r\nBy Revelation Ink Clothing Co. \r\n", 
+      "back": "", 
+      "featured": false, 
+      "featured_image": "uploads/clothes/Sports Tank_featured.png", 
+      "front": "uploads/clothes/Sports Tank_front.png", 
+      "markdownPrice": "19.99"
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "clothing.item", 
+    "fields": {
+      "category": 3, 
+      "sku": "9", 
+      "shown": true, 
+      "name": "Yellow Splatter", 
+      "price": "30", 
+      "description": "4.5oz 100% pre-shrunk ring-spun cotton tee shirt with screenprint design. \r\n\r\nBy Revelation Ink Clothing Co. \r\n", 
+      "back": "", 
+      "featured": false, 
+      "featured_image": "uploads/clothes/Yellow Splatter_featured.png", 
+      "front": "uploads/clothes/Yellow Splatter_front.png", 
+      "markdownPrice": "19.99"
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "clothing.item", 
+    "fields": {
+      "category": 3, 
+      "sku": "10", 
+      "shown": true, 
+      "name": "Test", 
+      "price": "1", 
+      "description": "This is a test for paypal. Delete it when done.", 
+      "back": "", 
+      "featured": false, 
+      "featured_image": "uploads/clothes/Test_featured.png", 
+      "front": "uploads/clothes/Test_front.png", 
+      "markdownPrice": "1"
+    }
+  }, 
+  {
+    "pk": 1, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 10, 
+      "quantity": -1, 
+      "size": 1
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 10, 
+      "quantity": -1, 
+      "size": 2
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 10, 
+      "quantity": -1, 
+      "size": 3
+    }
+  }, 
+  {
+    "pk": 4, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 10, 
+      "quantity": -1, 
+      "size": 4
+    }
+  }, 
+  {
+    "pk": 5, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 10, 
+      "quantity": -1, 
+      "size": 5
+    }
+  }, 
+  {
+    "pk": 6, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 9, 
+      "quantity": -1, 
+      "size": 1
+    }
+  }, 
+  {
+    "pk": 7, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 9, 
+      "quantity": -1, 
+      "size": 2
+    }
+  }, 
+  {
+    "pk": 8, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 9, 
+      "quantity": -1, 
+      "size": 3
+    }
+  }, 
+  {
+    "pk": 9, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 9, 
+      "quantity": -1, 
+      "size": 4
+    }
+  }, 
+  {
+    "pk": 10, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 9, 
+      "quantity": -1, 
+      "size": 5
+    }
+  }, 
+  {
+    "pk": 11, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 8, 
+      "quantity": -1, 
+      "size": 1
+    }
+  }, 
+  {
+    "pk": 12, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 8, 
+      "quantity": -1, 
+      "size": 2
+    }
+  }, 
+  {
+    "pk": 13, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 8, 
+      "quantity": -1, 
+      "size": 3
+    }
+  }, 
+  {
+    "pk": 14, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 8, 
+      "quantity": -1, 
+      "size": 4
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 8, 
+      "quantity": -1, 
+      "size": 5
+    }
+  }, 
+  {
+    "pk": 16, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 7, 
+      "quantity": -1, 
+      "size": 1
+    }
+  }, 
+  {
+    "pk": 17, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 7, 
+      "quantity": -1, 
+      "size": 2
+    }
+  }, 
+  {
+    "pk": 18, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 7, 
+      "quantity": -1, 
+      "size": 3
+    }
+  }, 
+  {
+    "pk": 19, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 7, 
+      "quantity": -1, 
+      "size": 4
+    }
+  }, 
+  {
+    "pk": 20, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 7, 
+      "quantity": -1, 
+      "size": 5
+    }
+  }, 
+  {
+    "pk": 21, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 6, 
+      "quantity": -1, 
+      "size": 1
+    }
+  }, 
+  {
+    "pk": 22, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 6, 
+      "quantity": -1, 
+      "size": 2
+    }
+  }, 
+  {
+    "pk": 23, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 6, 
+      "quantity": -1, 
+      "size": 3
+    }
+  }, 
+  {
+    "pk": 24, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 6, 
+      "quantity": -1, 
+      "size": 4
+    }
+  }, 
+  {
+    "pk": 25, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 6, 
+      "quantity": -1, 
+      "size": 5
+    }
+  }, 
+  {
+    "pk": 26, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 2, 
+      "quantity": -1, 
+      "size": 1
+    }
+  }, 
+  {
+    "pk": 27, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 2, 
+      "quantity": -1, 
+      "size": 2
+    }
+  }, 
+  {
+    "pk": 28, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 2, 
+      "quantity": -1, 
+      "size": 3
+    }
+  }, 
+  {
+    "pk": 29, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 2, 
+      "quantity": -1, 
+      "size": 4
+    }
+  }, 
+  {
+    "pk": 30, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 2, 
+      "quantity": -1, 
+      "size": 5
+    }
+  }, 
+  {
+    "pk": 31, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 5, 
+      "quantity": -1, 
+      "size": 1
+    }
+  }, 
+  {
+    "pk": 32, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 5, 
+      "quantity": -1, 
+      "size": 2
+    }
+  }, 
+  {
+    "pk": 33, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 5, 
+      "quantity": -1, 
+      "size": 3
+    }
+  }, 
+  {
+    "pk": 34, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 5, 
+      "quantity": -1, 
+      "size": 4
+    }
+  }, 
+  {
+    "pk": 35, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 4, 
+      "quantity": -1, 
+      "size": 1
+    }
+  }, 
+  {
+    "pk": 36, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 4, 
+      "quantity": -1, 
+      "size": 2
+    }
+  }, 
+  {
+    "pk": 37, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 4, 
+      "quantity": -1, 
+      "size": 3
+    }
+  }, 
+  {
+    "pk": 38, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 4, 
+      "quantity": -1, 
+      "size": 4
+    }
+  }, 
+  {
+    "pk": 39, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 3, 
+      "quantity": -1, 
+      "size": 1
+    }
+  }, 
+  {
+    "pk": 40, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 3, 
+      "quantity": -1, 
+      "size": 2
+    }
+  }, 
+  {
+    "pk": 41, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 3, 
+      "quantity": -1, 
+      "size": 3
+    }
+  }, 
+  {
+    "pk": 42, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 3, 
+      "quantity": -1, 
+      "size": 4
+    }
+  }, 
+  {
+    "pk": 43, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 11, 
+      "quantity": -1, 
+      "size": 1
+    }
+  }, 
+  {
+    "pk": 44, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 11, 
+      "quantity": -1, 
+      "size": 2
+    }
+  }, 
+  {
+    "pk": 45, 
+    "model": "clothing.stock", 
+    "fields": {
+      "item": 11, 
+      "quantity": -1, 
+      "size": 3
+    }
+  }, 
+]
