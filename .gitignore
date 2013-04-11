@@ -3,4 +3,5 @@
 *.pyc
 local_settings.py
 revelation_ink/settings.py
+static/uploads/*
 logs/app.log

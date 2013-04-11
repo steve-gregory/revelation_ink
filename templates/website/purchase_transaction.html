@@ -1,0 +1,59 @@
+{% extends "website/main.html" %}
+{% block ex_header %}
+  <script>
+    $().ready(function() {
+      review_transaction();
+      $('#cart-confirm').click(function() {
+	window.location = '/cart/complete/';
+      });
+      $('#cart-cancel').click(function() {
+	window.location = '/';
+      });
+    });
+  </script>
+{% endblock %}
+{% block content %}
+<div class="row-fluid">
+  <div class="span12">
+    <form>
+      <div class="row-fluid">
+        <div class="span6" id="billing_address">
+          <div class="formfield firstname">
+            <div class="label">
+              <span class="labeltext">First Name<span class="requiredindicator">*</span>:</span>
+            </div><!-- END: label -->
+            <div class="value">
+              <input class="textinput" id="dwfrm_billing_billingAddress_addressFields_firstname" type="text" name="dwfrm_billing_billingAddress_addressFields_firstname" value="" maxlength="19"></input>
+            </div>
+            <span id="firstnameInfo" class="error">First Name is required</span>
+          <div class="formfield lastname"></div>
+          <div class="formfield address1"></div>
+          <div class="formfield address2"></div>
+          <div class="formfield country"></div>
+          <div class="formfield city"></div>
+          <div class="formfield state"></div>
+          <div class="formfield zip"></div>
+          <div class="formfield phone"></div>
+          <div class="formfield email"></div>
+        </div>
+        <div class="span6" id="shipping_address">
+<div class="sameForBilling floatright">
+      <div class="checkbox">
+        <input class="checkinput" type="checkbox" name="dwfrm_singleshipping_shippingAddress_useAsBillingAddress" id="dwfrm_singleshipping_shippingAddress_useAsBillingAddress" value="true" maxlength="2147483647">
+          <label for="dwfrm_singleshipping_shippingAddress_useAsBillingAddress">Use same as Billing</label>
+      </div>
+        </div>
+          <div class="formfield firstname"></div>
+          <div class="formfield lastname"></div>
+          <div class="formfield address1"></div>
+          <div class="formfield address2"></div>
+          <div class="formfield country"></div>
+          <div class="formfield city"></div>
+          <div class="formfield state"></div>
+          <div class="formfield zip"></div>
+          <div class="formfield phone"></div>
+        </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
