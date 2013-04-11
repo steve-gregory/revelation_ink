@@ -16,6 +16,12 @@ except:
 def backbone_ex(request):
   return render_to_response('backbone/index.html', {})
 
+def shipping_guide(request):
+  return render_to_response('website/shipping.html', {})
+
+def privacy_policy(request):
+  return render_to_response('website/privacy.html', {})
+
 def home(request):
   photos = FrontPagePhoto.objects.order_by('weight')
   image_list = [p.image.url for p in photos] 
@@ -133,12 +139,8 @@ def getShippingArgs(querydict, billing_args):
   }
 
 def purchase_complete(request): 
-  # Get the items from the cart to calculate total
-  (cart_list,pretax_total) = getCartList(request)
-  pretax_total = float(pretax_total)
 
-  (tax, amountTaxed) = get_tax_total(pretax_total)#todo: include state
-  total = amountTaxed + pretax_total
+  (cart_list, pretax_total, tax, amountTaxed, shipping_total, total) = get_cart_details(request)
 
   card_args = getCardArgs(request.POST)
   billing_args = getBillingArgs(request.POST)
@@ -156,6 +158,7 @@ def purchase_complete(request):
       'cart_pretax' : '%.2f' % round(pretax_total,2),
       'cart_tax' : '%.1f' % round(tax*100,1),
       'cart_tax_total' : '%.2f' % round(amountTaxed,2),
+      'shipping_total' : '%.2f' % round(shipping_total,2),
       'cart_total' : '%.2f' % round(total,2),
     })
 
@@ -253,7 +256,7 @@ def reviewTransaction(request):
   #On "OKAY" click 'DoExpressCheckoutPayment'
 
 def show_review_page(request):
-    (cart_list,pretax_total, tax, tax_amount, total) = get_cart_details(request)
+    (cart_list,pretax_total, tax, tax_amount, shipping_amount, total) = get_cart_details(request)
     card_args = getCardArgs(request.POST)
     card_args['last4'] = card_args['acct'][-4:] if len(card_args['acct']) > 4 else ''
     billing_args = getBillingArgs(request.POST)
@@ -287,12 +290,13 @@ def show_review_page(request):
         'cart_pretax' : '%.2f' % round(pretax_total,2),
         'cart_tax' : '%.1f' % round(tax*100,1),
         'cart_tax_total' : '%.2f' % round(tax_amount,2),
+        'shipping_total' : '%.2f' % round(shipping_amount,2),
         'cart_total' : '%.2f' % round(total,2),
         })
     return render_to_response('website/checkout/review_payment.html', c)
 
 def make_purchase(request):
-    (cart_list,pretax_total, tax, tax_amount, total) = get_cart_details(request)
+    (cart_list,pretax_total, tax, tax_amount, shipping_total, total) = get_cart_details(request)
     card_args = getCardArgs(request.POST)
     billing_args = getBillingArgs(request.POST)
     shipping_args = getShippingArgs(request.POST, billing_args)
@@ -318,7 +322,8 @@ def make_purchase(request):
         'transaction_id' : confirm_id,
         'cart_pretax' : '%.2f' % round(pretax_total,2),
         'cart_tax' : '%.1f' % round(tax*100,1),
-        'cart_tax_total' : '%.2f' % round(tax_amount,2),
+        'cart_tax_total' : '%.2f' % round(tax_amount, 2),
+        'shipping_total' : '%.2f' % round(shipping_total, 2),
         'cart_total' : '%.2f' % round(total,2),
         'server_url': settings.SERVER_URL,
         'billing_info':billing_args,
@@ -353,10 +358,10 @@ def send_email(subject, body, from_email, to, cc=None, fail_silently=False):
 def get_cart_details(request):
   (cart_list,pretax_total) = getCartList(request)
   pretax_total = float(pretax_total)
-
   (tax, amountTaxed) = get_tax_total(pretax_total)
-  total = amountTaxed + pretax_total
-  return (cart_list, pretax_total, tax, amountTaxed, total)
+  shipping_total = get_shipping_total(cart_list)
+  total = amountTaxed + pretax_total + shipping_total
+  return (cart_list, pretax_total, tax, amountTaxed, shipping_total, total)
 
 #def completeTransaction(request):
 #  logger.info(request)
@@ -519,23 +524,37 @@ def get_tax_total(pretax_total, state='AZ'):
   amountTaxed = pretax_total * taxPercent
   return (taxPercent, amountTaxed)
 
+def get_shipping_total(cart_list):
+  """
+  Charge shipping based on # of cart list
+  """
+  item_count = len(cart_list)
+  if item_count > 20:
+    return 21.0
+  elif item_count > 15:
+    return 15.0
+  elif item_count > 10:
+    return 10.5
+  elif item_count > 4:
+    return 6.0
+  elif item_count > 0:
+    return 3.5
+
 def show_cart(request):
   """
   Show the contents of the cart, include tax (9.1%) and shipping (Free!)
   When ready to continue they press button
   """
   logger.info(request)
-  (cart_list,pretax_total) = getCartList(request)
-  pretax_total = float(pretax_total)
+  (cart_list, pretax_total, tax, amountTaxed, shipping_total, total) = get_cart_details(request)
 
-  (tax, amountTaxed) = get_tax_total(pretax_total)
-  total = amountTaxed + pretax_total
   return render_to_response('website/checkout/show_cart.html', 
     {
       'cart_list' : cart_list,
       'cart_pretax' : '%.2f' % round(pretax_total,2),
       'cart_tax' : '%.1f' % round(tax*100,1),
       'cart_tax_total' : '%.2f' % round(amountTaxed,2),
+      'shipping_total' : '%.2f' % round(shipping_total,2),
       'cart_total' : '%.2f' % round(total,2),
     })
 

@@ -112,7 +112,7 @@ class StockSold(models.Model):
   count = models.IntegerField(default=1)
 
   def __unicode__(self):
-    return "%s %s Size: $%s" % (self.count, self.item, self.size)
+    return "%s %s(%s) Size:%s" % (self.count, self.item.name,self.item.sku, self.size)
 
 
 class Transaction(models.Model):

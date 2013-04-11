@@ -18,6 +18,8 @@ urlpatterns = patterns('',
     #url(r'^api/item/(?P<item_id>.*)/$', Item.as_view()),
 
     url(r'^about/$', 'website.views.about', name='about'),
+    url(r'^shipping/$', 'website.views.shipping_guide', name='Shipping Guide'),
+    url(r'^privacy/$', 'website.views.privacy_policy', name='Privacy Policy'),
 
     #User sees the cart, can start the checkout purchase
     url(r'^cart/show/$', 'website.views.show_cart', name='Show Cart'),

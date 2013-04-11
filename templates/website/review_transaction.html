@@ -42,12 +42,12 @@
         <td>${{cart_pretax}}</td>
        </tr>
        <tr class='total-row'>
-        <td colspan='3'>Shipping:</td>
-        <td><span class='note-text'>Calculated at checkout</span></td>
-       </tr>
-       <tr class='total-row'>
         <td colspan='3'>Sales Tax:</td>
         <td>${{cart_tax_total}} ({{cart_tax}}%)</td>
+       </tr>
+       <tr class='total-row'>
+        <td colspan='3'>Shipping:</td>
+        <td>{% if shipping_total %} ${{ shipping_total }} {% else %} FREE {% endif %}</td>
        </tr>
        <tr class='total-row'>
         <td colspan='3'>TOTAL:</td>
