@@ -17,6 +17,7 @@ import os
 import sys
 
 sys.path.insert(0, '/opt/env/rev-ink/lib/python2.7/site-packages/')
+sys.path.insert(0, '/usr/lib')
 #Adds the directory above wsgi.py to system path
 root_dir = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(root_dir)
