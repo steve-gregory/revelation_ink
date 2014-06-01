@@ -1,0 +1,96 @@
+{% extends "website/main.html" %}
+{% block ex_header %}
+<style>
+.form-horizontal .form-actions{
+  background-color:#333;
+}
+p, form, legend{
+  color:#000;
+}
+</style>
+<script>
+$(document).ready(function(){
+   $form = $('form');
+   $form.submit(function(e){
+      var self = $(this);
+      var message_obj = {};
+      $(this).find('.controls input, .controls textarea').each(function() { 
+        key = this.id;
+        val = this.value;
+        if ( val.length <= 0 ) {
+           var label = $("label[for='"+key+"']");
+           $(".form-errors").html("<p>Missing value: "+label.html()+"</p>");
+           e.preventDefault(); //STOP default action
+           return False;
+        }
+        message_obj[key] = val;
+      });
+      
+      message_obj['csrfmiddlewaretoken'] = csrftoken;
+     
+      $.ajax({
+         url: $(this).attr('action'), 
+         type: "POST",
+         cache: false,
+         dataType: "json",
+         data: message_obj, 
+         success: function(data, textStatus, xhr){
+            // do something here on success
+           var form_actions = self.find('.form-actions');
+           $(".form-errors").html("<p>Your message has been received. Thank you for your input.</p>");
+
+           self.find('button[type=submit]').attr('disabled', 'disabled');
+           self.find('button[type=submit]').removeClass('btn-danger').addClass('btn-inverse');
+
+
+         },
+         error: function(xhr, ajaxOptions,  thrownError) {
+
+           $(".form-errors").html("<p> An error has occurred while sending your email. Please try again later.</p>");
+         }});//Endajax
+      e.preventDefault(); //STOP default action
+      e.unbind(); //unbind. to stop multiple form submit.
+      return false;
+   });
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="span2"></div>
+  <div class="span8">
+    <p>Contact Revelation Ink:</p>
+    <form action='/contact_form/' method='post' class="form-horizontal">
+      <fieldset>
+        <legend>Contact Revelation Ink Clothing Co.</legend>
+        <div class="control-group">
+          <label class="control-label" for="full-name">NAME</label>
+          <div class="controls">
+            <input type="text" class="input-xlarge" id="full-name" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="email">EMAIL</label>
+          <div class="controls">
+            <input type="text" class="input-xlarge" id="email" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="message">MESSAGE</label>
+          <div class="controls">
+            <textarea class="input-xlarge" id="message" rows="4"></textarea>
+          </div>
+        </div>
+        <div class="form-errors">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-danger">Send E-mail</button>
+          <button class="btn">Cancel</button>
+        </div>
+      {% csrf_token %}
+      </fieldset>
+    </form>
+  </div>
+  <div class="span2"></div>
+</div>
+{% endblock %}
