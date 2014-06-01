@@ -4,5 +4,5 @@
 local_settings.py
 revelation_ink/settings.py
 static/uploads/*
-meida/*
+media/*
 logs/app.log
