@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang='en'>
   <head>
+
     <meta charset='utf-8'>
     <title>REV-INK.com | The Road Ahead is Calling..</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta name='description' content=''>
     <meta name='author' content=''>
 
+    {% block header %}
     <!-- Le javascript
     ================================================== -->
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js'></script>
@@ -122,6 +124,8 @@
     var csrftoken = getCookie('csrftoken');
     </script>
 
+    {% endblock %}
+
     <link rel='shortcut icon' href='/static/ico/favicon.ico'>
     {% block ex_header %}
     <!--Web specific content here -->
@@ -185,15 +189,13 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><img src="/static/img/Talent_Button.png"/></a>
                 <ul class='dropdown-menu'>
                     <li><a href='/talent/joe_smith/'><img src="/static/img/dropdown_joe_smith.png"/></a></li>
-                    <li><a href='/talent/a_m_eyes/'><img src="/static/img/dropdown_a_m_eyes.png"/></a></li>
-                    <li><a href='/talent/cba/'><img src="/static/img/dropdown_cba.png"/></a></li>
-                    <li><a href='/talent/mttm/'><img src="/static/img/dropdown_mttm.png"/></a></li>
                 </ul>
                 
               </li>
             </ul>
           </div><!--/row-->
       </div>
+{% block body %}
       <div class='row-fluid'>
 
         <div class='span2'>
@@ -215,6 +217,7 @@
         </div><!--/span8-->
         <div id='rhs-spacer' class='span2'></div><!--/span2 (spacer)-->
       </div><!--/row-->
+{% endblock %}
       <div id="push"></div>
       <!--<hr>-->
 
@@ -226,7 +229,6 @@
             <div class='span2 hashtag text-left'>#REVINK</div>
             <div class='span8 footer-copyright text-center'>&copy; Revelation-Ink Clothing Co — 2013 — Designed by <a href='http://www.steve-gregory.com'>Steve Gregory</a> — <a href='/shipping/'>Shipping Guide</a> — <a href='/privacy/'>Privacy Policy</a></div>
             <div class='span2 hashtag text-right'>#REVINK</div>
-        <!--<p align="center">#REVINK &copy;Revelation-Ink Clothing Co — 2012 — Designed by <a href='http://www.steve-gregory.com'>Steve Gregory</a></p>-->
         </div>
       </footer>
 

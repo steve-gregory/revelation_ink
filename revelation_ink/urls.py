@@ -4,7 +4,6 @@ from django.conf.urls.defaults import *
 from website.api import ContactForm
 #from clothing.views.item import ItemManager, Item
 
-
 admin.autodiscover()
 def url(pattern,url,*args,**kwargs):
   return (pattern,url)
@@ -16,6 +15,7 @@ urlpatterns = patterns('',
 
     #url(r'^api/item/$', ItemManager.as_view()),
     #url(r'^api/item/(?P<item_id>.*)/$', Item.as_view()),
+    url(r'^update/$', 'website.views.home_new', name='home-new'),
 
     url(r'^about/$', 'website.views.about', name='about'),
     url(r'^shipping/$', 'website.views.shipping_guide', name='Shipping Guide'),
@@ -39,8 +39,8 @@ urlpatterns = patterns('',
     url(r'^shop/girls/$', 'website.views.shop_girls', name='shop girls'),
     url(r'^shop/$', 'website.views.shop', name='shop'),
     url(r'^shop/(?P<item_id>.*)/$', 'website.views.shop_item_selected', name='Item selected'),
-    url(r'^contact/$', 'website.views.home', name='contact'),
-    url(r'^contact_form/$', ContactForm.as_view(), name='contact'),
+    url(r'^contact/$', 'website.views.contact', name='contact'),
+    url(r'^contact_form/$', ContactForm.as_view(), name='contact-posted'),
     url(r'^where_to_buy/$', 'website.views.where_to_buy', name='where_to_buy'),
     url(r'^talent/a_m_eyes/$', 'website.views.talent_a_m_eyes', name='talent_ameyes'),
     url(r'^talent/joe_smith/$', 'website.views.talent_joe_smith', name='talent_joe_smith'),
