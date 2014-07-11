@@ -1,4 +1,4 @@
-{% extends "website/main.html" %}
+{% extends "website/main_new.html" %}
 {% block ex_header %}
   <script>
     $().ready(function() {
@@ -14,10 +14,10 @@
 {% endblock %}
 {% block content %}
 <div class="row-fluid">
-  <div class="span12">
+  <div class="col-md-12">
     <form>
       <div class="row-fluid">
-        <div class="span6" id="billing_address">
+        <div class="col-md-6" id="billing_address">
           <div class="formfield firstname">
             <div class="label">
               <span class="labeltext">First Name<span class="requiredindicator">*</span>:</span>
@@ -36,7 +36,7 @@
           <div class="formfield phone"></div>
           <div class="formfield email"></div>
         </div>
-        <div class="span6" id="shipping_address">
+        <div class="col-md-6" id="shipping_address">
 <div class="sameForBilling floatright">
       <div class="checkbox">
         <input class="checkinput" type="checkbox" name="dwfrm_singleshipping_shippingAddress_useAsBillingAddress" id="dwfrm_singleshipping_shippingAddress_useAsBillingAddress" value="true" maxlength="2147483647">

@@ -1,4 +1,4 @@
-{% extends "website/main.html" %}
+{% extends "website/main_new.html" %}
 {% block ex_header %}
 <style>
   .form-actions-inverse {
@@ -38,7 +38,7 @@ $().ready(function() {
 {% block content %}
 <form class="form-horizontal" method='post' action='/checkout/review/'>
   <div class="row-fluid">
-    <div id='billing-container' class='span6'>
+    <div id='billing-container' class='col-md-6'>
       <fieldset>
         <legend>Billing Address</legend>
         <!-- CSRF token -->
@@ -163,7 +163,7 @@ $().ready(function() {
         </div><!-- End control group-->
       </fieldset>
     </div><!--End item-image-container-->
-    <div id='shipping-container' class='span6'>
+    <div id='shipping-container' class='col-md-6'>
       <fieldset>
         <legend>Shipping Address</legend>
         <!-- FIRSTNAME -->
@@ -280,7 +280,7 @@ $().ready(function() {
     </div>
   </div>
   <div class="row-fluid">
-    <div id='checkout-container' class='span12'>
+    <div id='checkout-container' class='col-md-12'>
       <fieldset>
         <legend>Payment Methods</legend>
         <!-- FULL NAME -->

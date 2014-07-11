@@ -10,7 +10,7 @@ def url(pattern,url,*args,**kwargs):
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'website.views.home', name='home'),
+    url(r'^$', 'website.views.home_new', name='home'),
     #url(r'^bootstrap/$', 'website.views.ttr_bs', name='bootstrap'),
 
     #url(r'^api/item/$', ItemManager.as_view()),
@@ -35,6 +35,10 @@ urlpatterns = patterns('',
     url(r'^cart/add/$', 'website.views.add_to_cart', name='Add to cart'),
 
 
+    url(r'^shop/tanks/$', 'website.views.shop_tanks', name='shop tanks'),
+    url(r'^shop/shirts/$', 'website.views.shop_shirts', name='shop shirts'),
+    url(r'^shop/hats/$', 'website.views.shop_hats', name='shop hats'),
+    url(r'^shop/accessories/$', 'website.views.shop_accessories', name='shop accessories'),
     url(r'^shop/guys/$', 'website.views.shop_guys', name='shop guys'),
     url(r'^shop/girls/$', 'website.views.shop_girls', name='shop girls'),
     url(r'^shop/$', 'website.views.shop', name='shop'),

@@ -1,4 +1,4 @@
-{% extends "website/main.html" %}
+{% extends "website/main_new.html" %}
 {% block ex_header %}
   <script>
     $().ready(function() {
@@ -23,7 +23,7 @@
 {% endblock %}
 {% block content %}
 <div class="row" id='show-cart-frame'>
-  <div class="span12">
+  <div class="col-md-12">
    <h3> Review Transaction</h3>
    <p> Your transaction is not yet complete! Please confirm your order is correct and press Confirm Transaction</p>
    <table class='table table-stripe'>
@@ -58,7 +58,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="span12">
+  <div class="col-md-12">
     <form>
     <!--Show billing, shipping, last 4 of CC and that Info, ALL HIDDEN -->
    <button type="submit" id='cart-cancel' class='btn btn-inverse'>Return To Shopping</button>

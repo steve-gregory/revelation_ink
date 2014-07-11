@@ -31,6 +31,46 @@ def home(request):
       "paypal_debug" : settings.PAYPAL_DEBUG,
     })
 
+def shop_tanks(request):
+  guys_list = Item.objects.filter(category__name="Tank-Tops", category__parent__name="Guys", shown=True)
+  girls_list = Item.objects.filter(category__name="Tank-Tops", category__parent__name="Girls", shown=True)
+  return render_to_response("website/index_new.html", 
+    {
+      "product_lists" : {
+         "Guys": guys_list,
+         "Girls" : girls_list,
+      },
+      "paypal_debug" : settings.PAYPAL_DEBUG,
+    })
+def shop_shirts(request):
+  guys_list = Item.objects.filter(category__name="T-Shirts", category__parent__name="Guys", shown=True)
+  girls_list = Item.objects.filter(category__name="T-Shirts", category__parent__name="Girls", shown=True)
+  return render_to_response("website/index_new.html", 
+    {
+      "product_lists" : {
+         "Guys": guys_list,
+         "Girls" : girls_list,
+      },
+      "paypal_debug" : settings.PAYPAL_DEBUG,
+    })
+def shop_accessories(request):
+  item_list = Item.objects.filter(category__name="Accessories", shown=True)
+  return render_to_response("website/index_new.html", 
+    {
+      "product_lists" : {
+         "Accessories": item_list,
+      },
+      "paypal_debug" : settings.PAYPAL_DEBUG,
+    })
+def shop_hats(request):
+  item_list = Item.objects.filter(category__name="Hats", shown=True)
+  return render_to_response("website/index_new.html", 
+    {
+      "product_lists" : {
+         "Hats": item_list,
+      },
+      "paypal_debug" : settings.PAYPAL_DEBUG,
+    })
 def home_new(request):
   guys_list = Item.objects.filter(category__parent__name="Guys", shown=True)
   girls_list = Item.objects.filter(category__parent__name="Girls", shown=True)
@@ -468,7 +508,7 @@ def shop_item_selected(request, item_id):
     }
     jsonDict.update(csrf(request))
     logger.debug(jsonDict)
-    return render_to_response("website/shop_item_selected.html", jsonDict)
+    return render_to_response("website/shop_item_selected_new.html", jsonDict)
   except Exception, e:
     logger.error(e)
     return HttpResponseRedirect("/shop/")

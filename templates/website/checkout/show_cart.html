@@ -1,4 +1,4 @@
-{% extends "website/main.html" %}
+{% extends "website/main_new.html" %}
 {% block ex_header %}
   <script>
     $().ready(function() {
@@ -22,7 +22,7 @@
 {% endblock %}
 {% block content %}
 <div class="row" id='show-cart-frame'>
-  <div class="span12">
+  <div class="col-md-12">
    <h3>Shopping Cart</h3>
    <table class='table table-stripe'>
      <thead>
@@ -41,7 +41,7 @@
             <input readonly="readonly" class="input-small cart-item-quantity" type="number" value="{{item.quantity}}"/>
         </td>
         <td>
-            <img class="thumbnail" src="{{server_url}}{{item.image_url}}">
+            <img class="img-responsive" src="{{server_url}}{{item.image_url}}">
         </td>
         <td>{{item.name}}<br>Size:{{item.size}}<br>{{item.description}}</td>
         <td class="cart-item-price">{{item.price}}</td>
@@ -73,9 +73,9 @@
   </div>
 </div>
 <div class="row">
-  <div class="span12">
+  <div class="col-md-12">
    <button id='cart-cancel' class='btn btn-inverse'>Return To Shopping</button>
-   <button id='cart-confirm' class='btn btn-danger pull-right'>Purchase Shopping Cart</button>
+   <button id='cart-confirm' class='btn btn-success pull-right'>Purchase Shopping Cart</button>
   </div>
 </div>
 {% endblock %}

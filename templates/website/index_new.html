@@ -1,163 +1,54 @@
-{% extends "website/main.html" %}
+{% extends "website/main_new.html" %}
 
-{% block header %}
-    <!-- Le javascript
-    ================================================== -->
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js'></script>
-    <script src='/static/js/twitter_latest.js'></script>
-    <script src='/static/js/ajax_request.js'></script>
-    <script src='/static/js/shopping_cart.js'></script>
-    <!-- Le styles
-    ================================================== -->
-    <link href='/static/bootstrap/css/bootstrap-responsive.css' rel='stylesheet'>
-    <link href='/static/css/sticky_footer.css' rel='stylesheet'>
-    <style type='text/css'>
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .uneditable-input, .add-on {
-        color:#333;
-      }
-      .text-right {
-        text-align: right;
-      }
-      .text-center {
-        text-align: center;
-      }
-      .text-left {
-        text-align: left;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-      .icon-twitter {
-        background:url('/static/img/twitter-bird-16x16.png') 0 0;
-      }
-      body {
-        background: #FFF url('/static/img/background.png') no-repeat fixed center;
-        /* Resize to best fit and retain aspect ratio.
-        Will cause gap if aspect ratio of box is different from image. */ 
-        background-size: cover;
-      }
-      footer {
-        margin:20px 0;
-        padding:9px 0 0 0;
-        font: 20px "bookman old style";
-        text-transform:uppercase;
-      }
-      .footer-logo {
-        padding:0 0 0 35px ;
-      }
-      footer a, footer a:hover {
-        padding:20px 0;
-        text-decoration:none;
-        color:red;
-      }
-      .hashtag {
-        color: white;
-      }
-      .footer-copyright {
-        color: red;
-      }
-      #body-container , legend{
-      	color: white;
-      }
-      /* Increase modal width
-      body .modal {
-        width:60%;
-        left:20%;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      /*End increase modal style*/
-.center-tabs > li, .center-pills > li {
-    float:none;
-    display:inline-block;
-    *display:inline; /* ie7 fix */
-     zoom:1; /* hasLayout ie7 trigger */
-}
 
-.center-tabs, .center-container{
-    text-align:center;
-}
-    </style>
-    <script>
-    $().ready(function() {
-      $('#submit-cart').click( function() {
-        window.location = '/cart/show/';
-      });
-    });
-    </script>
-    <script>
-    $().ready(function() {
-      $('.dropdown-toggle').dropdown();
-      //$('#cart-modal').modal('hide');
-    });
-    // using jQuery
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    var csrftoken = getCookie('csrftoken');
-    </script>
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<style>
-.carousel-control {
-  padding-top:10%;
-  width:5%;
-  font-size:50px;
-}
-.nav-tabs > li, .nav-pills > li {
-    float:none;
-    display:inline-block;
-    *display:inline; /* ie7 fix */
-     zoom:1; /* hasLayout ie7 trigger */
-}
-</style>
-<script>
-$(document).ready(function() {
-  $('.aCarousel carousel').carousel({
-  interval: 10000
-  })
-    
-    $('.aCarousel carousel').on('slid.bs.carousel', function() {
-      //alert("slid");
-  });
-    
-    
-});
-</script>
-{% endblock %}
-
-{% block body %}
+{% block content %}
+<!--
 <div class="row-fluid">
   <div class="span8 offset2">
+-->
+  <div class="row-fluid">
   {% if product_lists %}
   {% for name,item_list in product_lists.items %}
     <div class="col-md-12">
         <h1>{{ name }}</h1>
+        {% if item_list %}
         <div class="well">
-            <div id="myCarousel_{{ forloop.counter }}" class="aCarousel carousel slide">
+            <div id="smlCarousel_{{ forloop.counter }}" class="aCarousel carousel slide media-carousel-xs visible-sm visible-xs">
+                <!-- Carousel items -->
+                <div class="carousel-inner">
+                  {% for item in item_list %}
+                    {% if forloop.counter0 == 0 %}
+                    <!-- if forloop.counter0 == 0 -->
+                    <div class="item active">
+                        <div class="row">
+                    {% elif forloop.counter0|divisibleby:"3" %}
+                    <!-- elif forloop.counter0|divisibleby:"3" -->
+                    <div class="item">
+                        <div class="row">
+                    {% endif %}
+
+                            <div class="col-xs-4">
+                             <a href="/shop/{{ item.id }}/">
+                               <img src="{{ item.front.url }}" alt="Image" width="150px">
+                             </a>
+                            </div>
+
+                    {% if forloop.last or forloop.counter|divisibleby:"3" %}
+                    <!-- if forloop.last or forloop.counter|divisibleby:"3" -->
+                        </div>
+                        <!--/row-->
+                    </div>
+                    <!--/item-->
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <!--/carousel-inner-->
+                <a class="left carousel-control" href="#smlCarousel_{{ forloop.counter }}" data-slide="prev">‹</a>
+
+                <a class="right carousel-control" href="#smlCarousel_{{ forloop.counter }}" data-slide="next">›</a>
+            </div>
+            <!--/smlCarousel_{{ forloop.counter }}-->
+            <div id="myCarousel_{{ forloop.counter }}" class="aCarousel carousel slide media-carousel-up hidden-sm hidden-xs">
                 <!-- Carousel items -->
                 <div class="carousel-inner">
                   {% for item in item_list %}
@@ -171,7 +62,7 @@ $(document).ready(function() {
                         <div class="row">
                     {% endif %}
 
-                            <div class="col-sm-3">
+                            <div class="col-lg-3 col-md-3">
                              <a href="/shop/{{ item.id }}/"><img src="{{ item.front.url }}" alt="Image" class="img-responsive"></a>
                             </div>
 
@@ -192,9 +83,15 @@ $(document).ready(function() {
             <!--/myCarousel_{{ forloop.counter }}-->
         </div>
         <!--/well-->
+        {% else %}
+          <div class="well"> Sorry, all products in this category have sold out! More inventory coming soon.</div>
+        {% endif %}
     </div>
   {% endfor %}
   {% endif %}
   </div>
+<!--
+  </div>
 </div>
+-->
 {% endblock %}

@@ -52,7 +52,7 @@ var refresh_cart = function() {
             '<span class="add-on update-item"><i class="icon-ok"></i></span>'+
            '</div>'+
          '</td>'+
-         '<td><img class="thumbnail" src="'+item.image_url+'"/></td>'+
+         '<td><img class="img-responsive thumbnail" src="'+item.image_url+'"/></td>'+
          '<td>'+item.name+'<br/>Size:'+item.size+'<br/>'+item.description+'</td>'+
          '<td class="cart-item-price">'+item.price+'</td>'+
          '<td class="cart-item-total">'+totalprice+'</td>'+

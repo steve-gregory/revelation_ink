@@ -1,0 +1,313 @@
+
+/* Instagram badge display*/
+.ig-b- { display: inline-block; }
+.ig-b- img { visibility: hidden; }
+.ig-b-:hover { background-position: 0 -60px; } .ig-b-:active { background-position: 0 -120px; }
+.ig-b-24 { width: 24px; height: 24px; background: url(//badges.instagram.com/static/images/ig-badge-sprite-24.png) no-repeat 0 0; }
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+.ig-b-24 { background-image: url(//badges.instagram.com/static/images/ig-badge-sprite-24@2x.png); background-size: 60px 178px; } }
+
+/*[sticky_footer.css]*/
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+body {
+  margin-top:60px;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -60px;
+}
+
+/* Set the fixed height of the footer here */
+#push,
+footer {
+  height: 60px;
+}
+footer .container-fluid {
+  background-color: #000;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+footer .container-fluid {
+  margin-left: -20px;
+  margin-right: -20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+}
+
+          body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+          }
+          .uneditable-input, .add-on {
+            color:#333;
+          }
+          .text-right {
+            text-align: right;
+          }
+          .text-center {
+            text-align: center;
+          }
+          .text-left {
+            text-align: left;
+          }
+          #sidebar-nav ul {
+            list-style:none;
+          }
+          .icon-twitter {
+            background:url('/static/img/twitter-bird-16x16.png') 0 0;
+          }
+    body{
+       min-width:650px; /* suppose you want minimun width of 750px */
+       width: auto !important;  /* Firefox will set width as auto */
+       width:650px;             /* As IE ignores !important it will set width as 750px; */
+    }
+          body {
+            background: #FFF url('/static/img/fabric_plaid.png') repeat top left scroll;
+            /* Resize to best fit and retain aspect ratio.
+            Will cause gap if aspect ratio of box is different from image. */ 
+            /*background-size: cover;*/
+          }
+          footer {
+            margin:20px 0;
+            padding:9px 0 0 0;
+            font: 20px "bookman old style";
+            text-transform:uppercase;
+          }
+          .footer-logo {
+            padding:0 0 0 35px ;
+          }
+          footer a, footer a:hover {
+            padding:20px 0;
+            text-decoration:none;
+            color:red;
+          }
+          .hashtag {
+            color: white;
+          }
+          .footer-copyright {
+            color: red;
+          }
+          #body-container , legend{
+          	color: white;
+          }
+          li img, li a img {
+            width:90%;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          /* Increase modal width
+          body .modal {
+            width:60%;
+            left:20%;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          /*End increase modal style*/
+    .center-tabs > li, .center-pills > li {
+        float:none;
+        display:inline-block;
+        *display:inline; /* ie7 fix */
+         zoom:1; /* hasLayout ie7 trigger */
+    }
+    
+    .center-tabs, .center-container{
+        text-align:center;
+    }
+    .carousel-control {
+      padding-top:10%;
+      width:5%;
+      font-size:50px;
+    }
+    .nav-tabs > li, .nav-pills > li {
+        float:none;
+        display:inline-block;
+        *display:inline; /* ie7 fix */
+         zoom:1; /* hasLayout ie7 trigger */
+    }
+    
+    ul {
+      list-style:none;
+      padding-left:0px;
+    }
+    
+    /*simplesidebar*/
+    /*bootply/112447 carousel code*/
+    /*Text Styling */
+    div.panel, div.list-group-item, a.list-group-item, a.list-group-item-success {
+      background-color:rgba(0, 0, 0, 0);
+      border-color:rgba(0,0,0,0);
+      text-transform:uppercase;
+      font-family: "bookman old style", Rokkitt, Georgia, serif;
+      font-weight:bold;
+      color:#000;
+      text-decoration:none;
+      text-align:center;
+    }
+    
+    .sidebar-nav li,
+    .sidebar-nav li a,
+     .sidebar-nav li a:hover {
+      text-transform:uppercase;
+      font-family: "bookman old style", Rokkitt, Georgia, serif;
+      font-weight:bold;
+      color:#000;
+      text-decoration:none;
+      text-align:center;
+      margin-left:auto;
+      margin-right:auto;
+    }
+    
+    .row-xs-height {
+        display:table-row;
+    }
+    .modal-header h3 {
+    font-weight: bold;
+    margin: 0;
+    }
+    .modal-footer {
+    padding: 14px 15px 15px;
+    margin-bottom: 0;
+    text-align: right;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    -webkit-border-radius: 0 0 6px 6px;
+    -moz-border-radius: 0 0 6px 6px;
+    border-radius: 0 0 6px 6px;
+    -webkit-box-shadow: inset 0 1px 0 #ffffff;
+    -moz-box-shadow: inset 0 1px 0 #ffffff;
+    box-shadow: inset 0 1px 0 #ffffff;
+    }
+    .modal {
+    position: fixed;
+    top: 10%;
+    bottom: auto;
+    overflow: auto;
+    left: 50%;
+    z-index: 1050;
+    width: 560px;
+    margin-left: -280px;
+    background-color: #fff;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,.3);
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 3px 7px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 3px 7px rgba(0,0,0,.3);
+    box-shadow: 0 3px 7px rgba(0,0,0,.3);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+    }
+    div.well {
+      background:none;
+      border:none;
+    }
+    li.sidebar-brand a img {
+      width: 300px;
+    }
+    body {
+      padding-top: 80px;
+    }
+    .pa-bottom {
+      padding-bottom: 30px;
+    }
+    
+    .pos-top {
+      position: absolute;
+      top:50%;
+      margin-top:-14px;
+    }
+    
+    @media (min-width: 140px) and (max-width: 480px){
+      .carousel-indicators {
+      bottom: -5px;
+      }
+    }
+    
+    @media (min-width: 481px) and (max-width: 767px){
+      .carousel-indicators {
+      bottom: 5px;
+      }
+    }
+    
+    
+    .media-carousel-xs, .media-carousel-up {
+    margin-bottom: 0;
+    padding: 15px;
+    border: none;
+    }
+    
+    
+    
+    .aCarousel .thumbnail,
+    #media-xs .thumbnail{
+    margin-bottom:0;
+    }
+    .media-carousel-up .carousel-control.left:hover,
+    .media-carousel-up .carousel-control.right:hover {
+      background: none repeat scroll 0 0 #eee;
+    }
+    /* Previous button  */
+    .media-carousel-xs .carousel-control.left,
+    .media-carousel-up .carousel-control.left
+    {
+      left: -12px;
+      border: 0 solid #FFFFFF;
+      width : 22px;
+      background-color: none;
+      background-image: none;
+      background: none;
+      border-radius: 23px 23px 23px 23px;
+    /*
+      height: 22px;
+      top: 50%;
+      margin-top: -10px;
+    */
+    }
+    /* Next button  */
+    .media-carousel-xs .carousel-control.right,
+    .media-carousel-up .carousel-control.right
+    {
+      right: -12px !important;
+      border: 0 solid #FFFFFF;
+      width : 22px;
+      background-color: none;
+      background: none;
+      border-radius: 23px 23px 23px 23px;
+    /*
+      height: 22px;
+      top: 50%;
+      margin-top: -10px;
+    */
+    }
+    
+    #media-xs .carousel-control,
+    .aCarousel .carousel-control{
+    position: absolute;
+    bottom: 0;
+    font-size: 50px;
+    color: #808080;
+    text-shadow: 0 0 0;
+    opacity: 1;
+    filter: alpha(opacity=100);
+    }
+    
+    .media-carousel-xs .carousel-control:hover,.media-carousel-xs .carousel-control:focus,
+    .media-carousel-up .carousel-control:hover,.media-carousel-up .carousel-control:focus{
+    color: #808080;
+    }
