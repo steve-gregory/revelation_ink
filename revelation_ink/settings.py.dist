@@ -181,3 +181,12 @@ PAYPAL_DEBUG = False
 PAYPAL_STATE_TAX={
 	'AZ':0.091 #9.1 percent
 }
+NVP_API_ENDPOINT='https://api-3t.paypal.com/2.0/' 
+#Paypal REST API
+PAYPAL_MODE = "live"
+PAYPAL_SANDBOX_CREDS = {"mode":"sandbox", "endpoint":"https://api.sandbox.paypal.com", "client_id": "", "client_secret": ""}
+PAYPAL_REST_CREDS = {"mode":"live", "endpoint":"https://api.paypal.com", "client_id": "", "client_secret": ""}
+PAYPAL_DEBUG = False
+import paypalrestsdk
+CREDS = PAYPAL_REST_CREDS if PAYPAL_MODE == "live" else PAYPAL_SANDBOX_CREDS
+paypalrestsdk.configure(CREDS)

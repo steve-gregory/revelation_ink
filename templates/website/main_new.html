@@ -10,7 +10,6 @@
 
     {% block header %}
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js'></script>
-        <link rel="stylesheet" href="/static/css/new_style.css" />
 
         <!-- Le javascript
         ================================================== -->
@@ -25,12 +24,14 @@
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <!-- Optional theme -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/static/css/new_style.css" />
         <script src="/static/js/updated_main.js" > </script>
+        <script>
+        </script>
     {% endblock %}
     {% block ex_header %}
     <!--Web specific content here -->
     {% endblock %}
-
     <link rel='shortcut icon' href='/static/ico/favicon.ico'>
   </head>
   <body>
@@ -62,9 +63,16 @@
 
     <div id="wrap">
       <div class="container-fluid">
+      {% if paypal_debug %}
+      <div class='row-fluid'>
+          <div id='logo-container' class='center-container'>
+            <p style="font-family:'Times New Roman', Times, serif; font-size:35px; color:red">WARNING: Paypal has been disabled, while the website is under construction. Please check back later today </p>
+          </div>
+      </div>
+      {% endif %}
         <div class="row-fluid">
           <!-- Sidebar -->
-          <div id="sidebar-wrapper" class="col-lg-3 col-md-3 col-xs-12">
+          <div id="sidebar-wrapper" class="col-lg-2 col-md-2 col-xs-12">
               <div class="row-fluid">
                 <ul class="sidebar-nav">
                     <li class="sidebar-brand"><a href="/"><img id='logo' class="img-responsive" src="/static/img/logo.png"/></a></li>
@@ -78,7 +86,7 @@
                     <a href="http://instagram.com/revink10?ref=badge"><img src="/static/img/instagram.png"/></a>
                   </div>
                   <a href="#shop-collapse" class="list-group-item strong" data-toggle="collapse" data-parent="#MainMenu">Shop<b class="caret"></b></a>
-                  <div class="collapse" id="shop-collapse">
+                  <div class="collapse in" id="shop-collapse">
                     <a href="/shop/shirts/" class="list-group-item">T Shirts</a>
                     <a href="/shop/tanks/" class="list-group-item">Tank Tops</a>
                     <a href="/shop/hats/" class="list-group-item">Hats</a>
@@ -87,7 +95,7 @@
                   <a href='/about/' class="list-group-item">About</a>
                   <a href='/contact/' class="list-group-item">Contact</a>
                   <a href="#talent-collapse" class="list-group-item strong" data-toggle="collapse" data-parent="#MainMenu">Talent<b class="caret"></b></a>
-                  <div class="collapse" id="talent-collapse">
+                  <div class="collapse in" id="talent-collapse">
                     <a href="/talent/joe_smith/" class="list-group-item">Joseph Smith</a>
                   </div>
                   <a href='#cart-modal' class='list-group-item' data-toggle='modal'>Cart</a>
@@ -98,13 +106,6 @@
           <!-- Page content -->
           <div id="page-content-wrapper" class="col-lg-9 col-md-9 col-xs-12">
               <div class="content-header">
-              {% if paypal_debug %}
-              <div class='row-fluid'>
-                  <div id='logo-container' class='span12 center-container'>
-                    <p style="font-family:'Times New Roman', Times, serif; font-size:35px; color:red">WARNING: Paypal has been disabled, while the website is under construction. Please check back later today </p>
-                  </div>
-              </div>
-              {% endif %}
               </div>
               <div class="page-content">
                 {% block content %}
@@ -112,13 +113,12 @@
               </div>
           </div>
           <!-- Page content -->
+          <div id="ad-spacer-wrapper" class="col-lg-1 col-md-1 col-xs-12">
+          </div>
         </div> <!-- .row-fluid -->
       </div> <!-- .container-fluid -->
     </div><!--/#wrap-->
     <footer>
-      <div class='row-fluid'>
-          <div class='footer-logo text-left'><img src='/static/img/footer_logo.png'/></div>
-      </div>
       <div class='container-fluid'>
         <div id='footer-real' class='row-fluid'>
             <div class='col-sm-1 hashtag text-left'>#REVINK</div>

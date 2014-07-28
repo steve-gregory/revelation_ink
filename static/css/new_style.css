@@ -83,7 +83,7 @@ footer .container-fluid {
             /*background-size: cover;*/
           }
           footer {
-            margin:20px 0;
+            margin:100px 0 20px 0;
             padding:9px 0 0 0;
             font: 20px "bookman old style";
             text-transform:uppercase;
@@ -218,7 +218,7 @@ footer .container-fluid {
       border:none;
     }
     li.sidebar-brand a img {
-      width: 300px;
+      width: 200px;
     }
     body {
       padding-top: 80px;
@@ -311,3 +311,15 @@ footer .container-fluid {
     .media-carousel-up .carousel-control:hover,.media-carousel-up .carousel-control:focus{
     color: #808080;
     }
+body.modal-open {margin-right: 0px}
+
+.modal-body {
+   overflow-y:auto;
+   max-height:500px;
+}
+a.list-group-item {
+   font-size:20px;
+}
+.collapsing a,.collapse a {
+  font-size: 14px;
+}

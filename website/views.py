@@ -2,13 +2,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.context_processors import csrf
-from paypal.driver import PayPal
+from django.core.mail import EmailMessage
 from revelation_ink import settings
 from revelation_ink.logger import logger
 from clothing.models import Item, Size, StockSold, Transaction
 from website.models import AboutPagePhoto, FrontPagePhoto
-from decimal import Decimal
 import copy, uuid
+import paypalrestsdk
 try:
   import json
 except:
@@ -127,48 +127,26 @@ def getCardArgs(querydict, *args, **kwargs):
     first_name = querydict["fullname-card"].split(" ",1)[0]
     last_name = querydict["fullname-card"].split(" ",1)[1]
   else:
-    first_name,last_name = "",""
-  return {
-    "acct":querydict["ccnumber-card"],
-    "expdate":"%s%s" % (querydict["month-expire-card"],querydict["year-expire-card"]),
-    "cvv2":querydict["cvn-card"],
-    "cardtype":querydict["type-card"],
+    first_name,last_name = "",querydict["fullname-card"]
+  card_args = {
+    "number":querydict["ccnumber-card"],
+    "expire_month":int(querydict["month-expire-card"]),
+    "expire_year":int(querydict["year-expire-card"]),
+    "cvv2":int(querydict["cvn-card"]),
+    "type":querydict["type-card"].lower(),
     "first_name":first_name,
     "last_name":last_name,
-  } 
-"""
-{
- u"csrfmiddlewaretoken": [u"5GLWXLj8HYGFaR9m4SRjWPxW4me46v9X"],
+  }
+  card_args.update({"billing_address":getBillingArgs(querydict)})
+  return card_args
 
- u"lastname-shipping": [u""],
- u"address-shipping": [u""],
- u"country-shipping": [u"United States"],
- u"zip-shipping": [u""],
- u"city-shipping": [u""],
- u"address2-shipping": [u""],
- u"firstname-shipping": [u""],
-
- u"lastname-billing": [u"Gregory"],
- u"zip-billing": [u"85704"],
- u"city-billing": [u"Tucson"],
- u"address-billing": [u"641 E Windward Cir"],
- u"country-billing": [u"United States"],
- u"firstname-billing": [u"Steve"],
- u"address2-billing": [u""],
- u"State": [u"AZ", u""],
- u"cancel": [u""],
-}
-"""
 def getBillingArgs(querydict):
   return {
-    "street":querydict["address-billing"] if querydict.get("address2-billing",None) else "%s\n%s" % (querydict["address-billing"],querydict["address2-billing"]),
+    "line1":querydict["address-billing"] if querydict.get("address2-billing",None) else "%s\n%s" % (querydict["address-billing"],querydict["address2-billing"]),
     "city":querydict["city-billing"],
     "state":querydict["state-billing"],
-    "countrycode":"US",
-    "zip":querydict["zip-billing"],
-    "first_name":querydict["firstname-billing"],
-    "last_name":querydict["lastname-billing"],
-    "email":querydict["email-billing"],
+    "country_code":"US",
+    "postal_code":querydict["zip-billing"],
   } 
 
 def getShippingArgs(querydict, billing_args):
@@ -176,14 +154,19 @@ def getShippingArgs(querydict, billing_args):
   Get shipping args (Use billing if missing..)
   """
   if "yes" in querydict.get("ship_to_billing",[]):
-    return copy.copy(billing_args)
+    b_args = copy.copy(billing_args)
+    b_args.update({
+      "first_name": querydict["firstname-billing"],
+      "last_name": querydict["lastname-billing"]
+    })
+    return b_args
 
   return {
-    "street":querydict.get("address-shipping",querydict.get("address-billing")) if querydict.get("address2-shipping",None) else "%s\n%s" % (querydict.get("address-shipping",querydict.get("address-billing")),querydict.get("address2-shipping")),
+    "line1":querydict.get("address-shipping",querydict.get("address-billing")) if querydict.get("address2-shipping",None) else "%s\n%s" % (querydict.get("address-shipping",querydict.get("address-billing")),querydict.get("address2-shipping")),
     "city":querydict.get("city-shipping",querydict.get("city-billing")),
     "state":querydict.get("state-shipping",querydict.get("state-billing")),
     "countrycode":"US",
-    "zip":querydict.get("zip-shipping",querydict.get("zip-billing")),
+    "postal_code":querydict.get("zip-shipping",querydict.get("zip-billing")),
     "first_name":querydict["firstname-shipping"],
     "last_name":querydict["lastname-shipping"],
     "email":querydict["email-shipping"],
@@ -199,6 +182,7 @@ def purchase_complete(request):
   #Create the order model 
   logger.warn(card_args)
   logger.warn(billing_args)
+  
   p = PayPal()
   result = p.DoDirectPayment(*card_args, **billing_args)
   #Update the order to show payment went through
@@ -225,56 +209,19 @@ def getCartList(request):
     cart_list.append({
 	"id": cart_item["id"],
 	"size": cart_item["size"],
-	"image_url": item.front.url,
+	"image_url": item.front().url,
 	"price": "%.2f" % round(itemPrice,2),
 	"total": "%.2f" % round(total,2),
 	"quantity": cart_item["quantity"],
 	"description": item.description,
 	})
   return (cart_list,cartTotal)
-#Dead Paypal v1 shit
-#def reviewTransaction(request):
-#  logger.info(request)
-#  (cart_list,cartTotal) = getCartList(request)
-#  request.session["paypal_PayerID"] = request.GET["PayerID"]
-#  request.session["paypal_token"] = request.GET["token"]
-#  return render_to_response("website/review_transaction.html", 
-#    {
-#      "cart_list" : cart_list,
-#      "cart_total" : "%.2f" % round(cartTotal,2),
-#      "paypal_debug" : settings.PAYPAL_DEBUG,
-#    })
-#  #Show modal dialog on its own screen
-#  #On "OKAY" click "DoExpressCheckoutPayment"
-#
-#def completeTransaction(request):
-#  logger.info(request)
-#  #Clear the cart
-#  (cart_list,cartTotal) = getCartList(request)
-#  p = PayPal()
-#  cartTotal = request.session["paypal_total"]
-#  p.DoExpressCheckoutPayment("USD", "%.2f" % round(cartTotal,2), request.session["paypal_token"], request.session["paypal_PayerID"])
-#  #Test "status == ok"
-#  #Create a new transaction
-#  p.GetExpressCheckoutDetails(settings.SERVER_URL+"cart/review/", settings.SERVER_URL, request.session["paypal_token"])
-#  name = "%s %s" % (p.api_response["FIRSTNAME"],p.api_response["LASTNAME"])
-#  email = p.api_response["EMAIL"]
-#  #"Address\n\nTucson,AZ 85704"
-#  address = "%s\n%s\n%s,%s %s" % (p.api_response.get("SHIPTOSTREET","No Street Info"), p.api_response.get("SHIPTOSTREET2",""), p.api_response.get("SHIPTOCITY","No City"), p.api_response.get("SHIPTOSTATE","NoState"), p.api_response.get("SHIPTOZIP","No ZIP"))
-#  #Remove the cart and paypal variables
-#  transaction = Transaction(full_name=name, email=email, shipping_info=address)
-#  transaction.save()
-#  for list_item in cart_list:
-#    item = Item.objects.get(id=list_item["id"])
-#    size = Size.objects.get(name=list_item["size"])
-#    sold_item = StockSold(item=item, size=size, count=list_item["quantity"])
-#    sold_item.save()
-#    transaction.items_sold.add(sold_item)
-#  return transaction.confirmation_id
 
-def make_transaction(full_name, email, shipping_addr, billing_addr, cart_list):
+def make_transaction(full_name, email, shipping_addr, billing_addr, cart_list, confirmation_id=None):
   transaction = Transaction(full_name=full_name, email=email, shipping_info=shipping_addr, billing_info=billing_addr)
-  transaction.confirmation_id = uuid.uuid4()
+  if not confirmation_id:
+      confirmation_id = uuid.uuid4()
+  transaction.confirmation_id = confirmation_id
   transaction.save()
   for list_item in cart_list:
     item = Item.objects.get(id=list_item["id"])
@@ -305,37 +252,49 @@ def reviewTransaction(request):
     return show_review_page(request)
   #Show modal dialog on its own screen
   #On "OKAY" click "DoExpressCheckoutPayment"
+def makeItemList(cart_list):
+  item_list = []
+  for item in cart_list:
+    item_id = item["id"]
+    real_item = Item.objects.get(id=item_id)
+    item_list.append({
+      "name": real_item.name,
+      "sku": real_item.sku,
+      "price": item["price"],
+      "currency": "USD",
+	    "quantity": item["quantity"],
+    })
+  return item_list
+
 
 def show_review_page(request, errors=[]):
     (cart_list,pretax_total, tax, tax_amount, shipping_amount, total) = get_cart_details(request)
     card_args = getCardArgs(request.POST)
-    card_args["last4"] = card_args["acct"][-4:] if len(card_args["acct"]) > 4 else ""
+    email = request.POST["email-billing"]
+    card_args["last4"] = card_args["number"][-4:] if len(card_args["number"]) > 4 else ""
     billing_args = getBillingArgs(request.POST)
     shipping_args = getShippingArgs(request.POST, billing_args)
-    billing_full_name = "%s %s" % (billing_args["first_name"], billing_args["last_name"])
-    billing_addr = "%s\n%s,%s %s" % (billing_args["street"], billing_args["city"], billing_args["state"], billing_args["zip"])
+    billing_full_name = "%s %s" % (shipping_args["first_name"], shipping_args["last_name"])
+    billing_addr = "%s\n%s,%s %s" % (billing_args["line1"], billing_args["city"], billing_args["state"], billing_args["postal_code"])
     shipping_full_name = "%s %s" % (shipping_args["first_name"], shipping_args["last_name"])
-    shipping_addr = "%s\n%s,%s %s" % (shipping_args["street"], shipping_args["city"], shipping_args["state"], shipping_args["zip"])
+    shipping_addr = "%s\n%s,%s %s" % (shipping_args["line1"], shipping_args["city"], shipping_args["state"], shipping_args["postal_code"])
     card_full_name = "%s %s" % (card_args["first_name"], card_args["last_name"])
-    logger.info(card_full_name)
-    logger.info(card_args["last4"])
-    logger.info(shipping_args["email"])
-    logger.info(billing_args["email"])
+
     c = RequestContext(request, {
         "shipping" : {
             "full_name": shipping_full_name,
             "address": shipping_addr,
-            "email": shipping_args["email"],
+            "email": email,
         },
         "billing" : {
             "full_name": billing_full_name,
             "address": billing_addr,
-            "email": billing_args["email"],
+            "email": email,
         },
         "card" : {
             "full_name": card_full_name,
             "last4": card_args["last4"],
-            "type": card_args["cardtype"]
+            "type": card_args["type"]
         },
         "server_url": settings.SERVER_URL,
         "post_params":request.POST.copy(), 
@@ -354,41 +313,59 @@ def make_purchase(request):
     card_args = getCardArgs(request.POST)
     billing_args = getBillingArgs(request.POST)
     shipping_args = getShippingArgs(request.POST, billing_args)
-
     error_list = []
 
-    first_name = billing_args.pop("first_name")
-    if not first_name:
-        error_list.append("First name missing from billing addresss")
 
-    last_name = billing_args.pop("last_name")
-    if not last_name:
-        error_list.append("Last name missing from billing addresss")
-
-    card_args["amount"] = Decimal(total)
-    billing_args["ipaddress"] = request.META["REMOTE_ADDR"]
 
     full_name = "%s %s" % (shipping_args["first_name"], shipping_args["last_name"])
-    billing_addr = "%s\n%s,%s %s" % (billing_args["street"], billing_args["city"], billing_args["state"], billing_args["zip"])
-    shipping_addr = "%s\n%s,%s %s" % (shipping_args["street"], shipping_args["city"], shipping_args["state"], shipping_args["zip"])
-    email = shipping_args["email"]
+    full_name = "%s %s" % (shipping_args["first_name"], shipping_args["last_name"])
+    billing_addr = "%s\n%s,%s %s" % (billing_args["line1"], billing_args["city"], billing_args["state"], billing_args["postal_code"])
+    shipping_addr = "%s\n%s,%s %s" % (shipping_args["line1"], shipping_args["city"], shipping_args["state"], shipping_args["postal_code"])
+    email = request.POST["email-billing"]
     if not email:
         error_list.append("Please enter an e-mail address")
 
-    p = PayPal()
-    card_tuple = (card_args["acct"], card_args["expdate"], card_args["cvv2"], card_args["cardtype"], card_args["first_name"], card_args["last_name"], card_args["amount"])
     if error_list:
         return show_review_page(request, errors=error_list)
 
-    result = p.DoDirectPayment(*card_tuple, **billing_args)
-    if not result:
-        error_list.append("Your Credit Card was not accepted! Please review your information and try again.")
+    payment = paypalrestsdk.Payment({
+      "intent": "sale",
+      "payer": {
+        "payment_method": "credit_card",
+        "funding_instruments": [{
+          "credit_card": card_args
+          }]
+      },
+      "transactions": [{
+        "amount": {
+          "total" : "%.2f" % round(total,2),
+          "currency": "USD",
+          "details" : {
+            "subtotal": "%.2f" % round(pretax_total,2),
+            "tax" : "%.2f" % round(tax_amount,2),
+            "shipping" : "%.2f" % round(shipping_total,2),
+          }
+        },
+        "description": "Your purchase at Rev-Ink.com." }]})
+    
+    if not payment.create():
+        error_list.append("Your Credit Card was not accepted! Please review the error(s) and try again:%s" % payment.error)
+        logger.error("ERROR ACCEPTING PAYMENT! errors included: %s" % payment.__dict__)
+        email_to_admin("ERROR ACCEPTING PAYMENT!", "errors included: %s" % payment.__dict__)
         return show_review_page(request, errors=error_list)
-    confirm_id = make_transaction(full_name, email, shipping_addr, billing_addr, cart_list)
+    confirmation = payment.id
+    billing_args["ipaddress"] = request.META["REMOTE_ADDR"]
+    logger.info("Payment created successfully. ID=%s" % confirmation)
+    logger.info(full_name)
+    card_args["last4"] = card_args["number"][-4:] if len(card_args["number"]) > 4 else ""
+    logger.info(card_args["last4"])
+    logger.info(email)
+    confirm_id = make_transaction(full_name, email, shipping_addr, billing_addr, cart_list, confirmation_id=confirmation)
+    del request.session["cart"] 
     #send_confirmation_email(full_name, email)
     params = {
         "cart_list" : cart_list,
-        "transaction_id" : confirm_id,
+        "transaction_id" : confirmation,
         "cart_pretax" : "%.2f" % round(pretax_total,2),
         "cart_tax" : "%.1f" % round(tax*100,1),
         "cart_tax_total" : "%.2f" % round(tax_amount, 2),
@@ -403,7 +380,22 @@ def make_purchase(request):
     c = RequestContext(request, params)
     return render_to_response("website/thank_you_transaction.html",c)
 
-    
+def email_to_admin(subject, body):
+    """
+    Send a basic email to the admins. Nothing more than subject and message
+    are required.
+    """
+    admins = settings.ADMINS
+    sending_admin = admins[0]
+    return send_email(subject, body,
+                      from_email=email_address_str(sending_admin[0], sending_admin[1]),
+                      to=[email_address_str(admin_name, admin_email) for admin_name, admin_email in admins])
+
+def email_address_str(name, email):
+    """ Create an email address from a name and email.
+    """
+    return "%s <%s>" % (name, email)
+
 def send_email(subject, body, from_email, to, cc=None, fail_silently=False):
     """ Use django.core.mail.EmailMessage to send and log an Atmosphere email.
     """
@@ -413,7 +405,7 @@ def send_email(subject, body, from_email, to, cc=None, fail_silently=False):
                            to=to,
                            cc=cc)
         msg.send(fail_silently=fail_silently)
-        email_logger.info("Email Sent. To: %s\nFrom: %sCc: %s\nSubject: %s\nBody:\n%s" %
+        logging.info("Email Sent. To: %s\nFrom: %sCc: %s\nSubject: %s\nBody:\n%s" %
                          (from_email,
                           to,
                           cc,
@@ -481,7 +473,7 @@ def add_to_cart(request):
     item = Item.objects.get(id=item_id)
     price = item.markdownPrice if item.markdownPrice != 0 else item.price
     desc = item.description
-    image_url = item.front.url 
+    image_url = item.front().url 
     existsInCart = False
     for cart_item in cart:
       if cart_item["id"] == item_id and cart_item["size"] == size:
@@ -495,6 +487,22 @@ def add_to_cart(request):
     logger.error(e)
     return HttpResponse(status=500, content="Internal Server Failure, Check the logs!")
 
+def ajax_item_selected(request, item_id):
+  try:
+    item = Item.objects.get(id=item_id)
+    size_list = item.quantity.order_by("id")
+    jsonDict = {
+      "item":item.json(),
+      "size_list": size_list,
+      "quantity_list": range(1,11), 
+      "paypal_debug" : settings.PAYPAL_DEBUG,
+    }
+    jsonDict.update(csrf(request))
+    logger.debug(jsonDict)
+    return render_to_response("website/ajax_item_form.html", jsonDict)
+  except Exception, e:
+    logger.error(e)
+    return HttpResponseRedirect("/shop/")
 def shop_item_selected(request, item_id):
   try:
     item = Item.objects.get(id=item_id)
@@ -534,6 +542,7 @@ def shop_girls(request):
     "paypal_debug" : settings.PAYPAL_DEBUG,
   })
 def shop(request):
+  return HttpResponseRedirect("/")
   gender = request.GET.get("gender",None)
   items = Item.objects.all()
   if gender:
@@ -599,6 +608,11 @@ def get_shipping_total(cart_list):
   """
   if not cart_list:
     return 0.0
+  #TODO: Removeme after longterm fix!
+  for item in cart_list:
+    real_item = Item.objects.filter(id=item['id'])
+    if real_item and 'joseph smith' in real_item[0].name.lower():
+      return 0.0
   item_count = len(cart_list)
   if item_count > 20:
     return 21.0

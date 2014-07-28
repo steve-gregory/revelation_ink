@@ -82,6 +82,7 @@
    <p> Your transaction is not yet complete! Press 'Purchase Shopping Cart' to continue</p>
     <form method='POST' action='.' >
       <!--Show billing, shipping, last 4 of CC and that Info, ALL HIDDEN -->
+      <input type="hidden" name="payment_id" value="{{payment_id}}">
       {% for key, value in post_params.items %}
         <input type="hidden" name="{{key}}" value="{{value}}">
       {% endfor %}

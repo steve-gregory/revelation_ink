@@ -47,12 +47,12 @@ var refresh_cart = function() {
        ('<tr class="cart-item" id="'+index+'">'+
          '<td>'+
            '<div class="input-append">'+
-            '<input class="input-small cart-item-quantity" min="0" max="10" step="1" type="number" value="'+item.quantity+'"></input>'+
-            '<span class="add-on remove-item"><i class="icon-remove"></i></span>'+
-            '<span class="add-on update-item"><i class="icon-ok"></i></span>'+
+            '<span class="input-group-addon remove-item" style="display:inline;"><span class="glyphicon glyphicon-remove"></span></span>'+
+            '<span class="input-group-addon update-item" style="display:inline;"><span class="glyphicon glyphicon-ok"></span></span>'+
+            '<input class="form-control input-small cart-item-quantity" min="0" max="10" step="1" type="number" value="'+item.quantity+'"></input>'+
            '</div>'+
          '</td>'+
-         '<td><img class="thumbnail" src="'+item.image_url+'"/></td>'+
+         '<td><img class="img-responsive thumbnail" src="'+item.image_url+'"/></td>'+
          '<td>'+item.name+'<br/>Size:'+item.size+'<br/>'+item.description+'</td>'+
          '<td class="cart-item-price">'+item.price+'</td>'+
          '<td class="cart-item-total">'+totalprice+'</td>'+
@@ -82,6 +82,30 @@ var refresh_cart = function() {
       item.csrftoken = csrftoken;
       update_cart(item);
     });
+  });
+};
+var show_transaction = function() {
+  $.getJSON('/cart/', function(cartItems) {
+    console.log(cartItems);
+    var item_list = [];
+    shoppingCartArr = [];
+    $.each(cartItems, function(index) {
+      var item = cartItems[index];
+      var totalprice = (item.price * item.quantity).toFixed(2);
+      console.log(item);
+      shoppingCartArr.push(item);
+      item_list.push
+       ('<tr class="cart-item" id="'+index+'">'+
+         '<td>'+
+          '<input readonly="readonly" class="input-small cart-item-quantity" min="0" max="10" step="1" type="number" value="'+item.quantity+'"></input>'+
+         '</td>'+
+         '<td><img class="thumbnail" src="'+item.image_url+'"/></td>'+
+         '<td>'+item.name+'<br/>Size:'+item.size+'<br/>'+item.description+'</td>'+
+         '<td class="cart-item-price">'+item.price+'</td>'+
+         '<td class="cart-item-total">'+totalprice+'</td>'+
+       '</tr>');
+    });
+    $('#review-transaction-rows').prepend(item_list.join(''));
   });
 };
 var review_transaction = function() {

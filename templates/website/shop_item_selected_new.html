@@ -11,7 +11,7 @@
 </style>
 <script>
   $().ready(function() {
-    $('form').submit(function(){
+    $('form.add-to-cart').submit(function(){
       var id = {{ item.id }};
       var name = "{{ item.name }}";
       var csrf = $('input[name=csrfmiddlewaretoken]').val();
@@ -52,7 +52,7 @@ div#item-container {
       <!-- Like this shirt, tweet this shirt-->
     </div><!--End item-image-container-->
     <div id='item-form-container' class='col-md-6 col-xs-6'>
-      <form class="form-horizontal" >
+      <form class="form-horizontal add-to-cart" >
         <fieldset>
           <legend> {{ item.name }}</legend>
           {% if item.markdownPrice != 0 %}
@@ -117,7 +117,7 @@ div#item-container {
         {% csrf_token %}
         </fieldset>
       </form>
-      <p>${{ item.description }} </p>
+      <p>{{ item.description }} </p>
     </div><!--End item-form-container-->
   </div><!--End row-fluid -->
 </div><!--End row-fluid -->

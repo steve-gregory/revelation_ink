@@ -35,6 +35,12 @@ def featured_image(self, filename):
   filename = '%s%s.%s' % (self.name,'_featured',ext)
   return os.path.join('uploads/clothes', filename)
 
+def clothing_image(self, filename):
+  ext = filename.split('.')[-1]
+  #Validate extension
+  filename = '%s.%s' % (self.name,ext)
+  return os.path.join('uploads/clothes', filename)
+
 def front_image(self, filename):
   ext = filename.split('.')[-1]
   #Validate extension
@@ -46,6 +52,13 @@ def back_image(self, filename):
   #Validate extension
   filename = '%s%s.%s' % (self.name,'_back',ext)
   return os.path.join('uploads/clothes', filename)
+
+class ItemImage(models.Model):
+  name = models.CharField(max_length=255)
+  image = models.ImageField(upload_to=clothing_image)
+
+  def __unicode__(self):
+    return "%s <%s>" % (self.name, self.image.url if self.image else 'N/A')
 
 class Item(models.Model):
   """
@@ -71,13 +84,20 @@ class Item(models.Model):
   markdownPrice = models.DecimalField(max_digits=5, decimal_places=2, default=0) # Make it easy to 'mark-down' clothes and have it show up on website
   featured = models.BooleanField(default=False) #Should this clothing item be featured (on the home page?)
   shown = models.BooleanField(default=True) #Should this clothing item be shown in the shop?
-
+  images = models.ManyToManyField(ItemImage)
   featured_image = models.ImageField(upload_to=featured_image, blank=True, null=True)
-  front = models.ImageField(upload_to=front_image, blank=True, null=True)
-  back = models.ImageField(upload_to=back_image, blank=True, null=True)
+  #front = models.ImageField(upload_to=front_image, blank=True, null=True)
+  #back = models.ImageField(upload_to=back_image, blank=True, null=True)
 
   def __unicode__(self):
     return "%s <%s> - $%s" % (self.name, self.category, self.markdownPrice)
+  def front(self):
+    front_image = self.images.filter(name__contains='front')
+    return front_image[0].image if front_image else None
+  def back(self):
+    back_image = self.images.filter(name__contains='back')
+    return back_image[0].image if back_image else None
+
 
   def json(self):
     return {
@@ -85,8 +105,8 @@ class Item(models.Model):
       'name':self.name,
       'price':self.price,
       'markdownPrice':self.markdownPrice,
-      'front_url':self.front.url if self.front else '',
-      'back_url':self.back.url if self.back else '',
+      'front_url':self.front().url if self.front() else '',
+      'back_url':self.back().url if self.back() else '',
       #Change to list: [pictures] in order
       'description':self.description,
       'sku':self.sku,

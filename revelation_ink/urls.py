@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 #from django.conf.urls import patterns, include, url
 from django.conf.urls.defaults import *
 from website.api import ContactForm
@@ -43,6 +45,7 @@ urlpatterns = patterns('',
     url(r'^shop/girls/$', 'website.views.shop_girls', name='shop girls'),
     url(r'^shop/$', 'website.views.shop', name='shop'),
     url(r'^shop/(?P<item_id>.*)/$', 'website.views.shop_item_selected', name='Item selected'),
+    url(r'^shop/(?P<item_id>.*)/form.html$', 'website.views.ajax_item_selected', name='Item selected'),
     url(r'^contact/$', 'website.views.contact', name='contact'),
     url(r'^contact_form/$', ContactForm.as_view(), name='contact-posted'),
     url(r'^where_to_buy/$', 'website.views.where_to_buy', name='where_to_buy'),
@@ -60,4 +63,5 @@ urlpatterns = patterns('',
     ### DJANGORESTFRAMEWORK ###
     #url(r'^restframework', include('djangorestframework.urls', namespace='djangorestframework'))
 
-)
+) 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

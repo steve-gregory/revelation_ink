@@ -47,9 +47,9 @@ var refresh_cart = function() {
        ('<tr class="cart-item" id="'+index+'">'+
          '<td>'+
            '<div class="input-append">'+
-            '<input class="input-small cart-item-quantity" min="0" max="10" step="1" type="number" value="'+item.quantity+'"></input>'+
-            '<span class="add-on remove-item"><i class="icon-remove"></i></span>'+
-            '<span class="add-on update-item"><i class="icon-ok"></i></span>'+
+            '<span class="input-group-addon remove-item" style="display:inline;"><span class="glyphicon glyphicon-remove"></span></span>'+
+            '<span class="input-group-addon update-item" style="display:inline;"><span class="glyphicon glyphicon-ok"></span></span>'+
+            '<input class="form-control input-small cart-item-quantity" min="0" max="10" step="1" type="number" value="'+item.quantity+'"></input>'+
            '</div>'+
          '</td>'+
          '<td><img class="img-responsive thumbnail" src="'+item.image_url+'"/></td>'+

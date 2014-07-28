@@ -1,12 +1,17 @@
 {% extends "website/main_new.html" %}
 {% block ex_header %}
 <style>
-.form-horizontal .form-actions{
-  background-color:#333;
-}
 p, form, legend{
   color:#000;
 }
+.input-xxlarge {
+  width: 400px;
+}
+.text-input .input-xxlarge {
+  height: 40px;
+}
+
+
 </style>
 <script>
 $(document).ready(function(){
@@ -58,34 +63,32 @@ $(document).ready(function(){
 {% block content %}
 <div class="container">
 <div class="row-fulid">
-  <div class="">
-    <p>Contact Revelation Ink:</p>
+  <div class="col-md-6">
     <form action='/contact_form/' method='post' class="form-horizontal">
       <fieldset>
         <legend>Contact Revelation Ink Clothing Co.</legend>
         <div class="control-group">
           <label class="control-label" for="full-name">NAME</label>
           <div class="controls">
-            <input type="text" class="input" id="full-name" />
+            <input type="text" class="input-xxlarge" id="full-name" />
           </div>
         </div>
         <div class="control-group">
           <label class="control-label" for="email">EMAIL</label>
           <div class="controls">
-            <input type="text" class="input-xlarge" id="email" />
+            <input type="text" class="input-xxlarge" id="email" />
           </div>
         </div>
         <div class="control-group">
           <label class="control-label" for="message">MESSAGE</label>
           <div class="controls">
-            <textarea class="input-xlarge" id="message" rows="4"></textarea>
+            <textarea class="input-xxlarge" id="message" rows="8"></textarea>
           </div>
         </div>
         <div class="form-errors">
         </div>
         <div class="form-actions">
-          <button type="submit" class="btn btn-danger">Send E-mail</button>
-          <button class="btn">Cancel</button>
+          <button type="submit" class="btn btn-success">Send E-mail</button>
         </div>
       {% csrf_token %}
       </fieldset>

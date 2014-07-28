@@ -9,7 +9,7 @@
     text-decoration:line-through;
   }
   #item-form-container , legend, .control-label {
-    color:white;
+    color:black;
   }
 </style>
 <script>
@@ -70,7 +70,7 @@ $().ready(function() {
           <label class='control-label' for='address-billing'>Address</label>
           <div class='controls'>
             <input id='address1-billing' name='address-billing' type='text'/>
-            <input id='address2-billing' name='address2-billing' type='text'/>
+            <input id='address2-billing' name='address2-billing' type='hidden'/>
           </div><!-- End controls -->
         </div><!-- End control group-->
         <!-- COUNTRY -->
@@ -185,7 +185,7 @@ $().ready(function() {
           <label class='control-label' for='address-shipping'>Address</label>
           <div class='controls'>
             <input id='address1-shipping' name='address-shipping' type='text' placeholder=''/>
-            <input id='address2-shipping' name='address2-shipping' type='text' placeholder=''/>
+            <input id='address2-shipping' name='address2-shipping' type='hidden' placeholder=''/>
           </div><!-- End controls -->
         </div><!-- End control group-->
         <!-- COUNTRY -->

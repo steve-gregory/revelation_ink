@@ -63,7 +63,7 @@
                     {% endif %}
 
                             <div class="col-lg-3 col-md-3">
-                             <a href="/shop/{{ item.id }}/"><img src="{{ item.front.url }}" alt="Image" class="img-responsive"></a>
+                             <a href="/shop/{{ item.id }}/" class="popover-item" data-toggle="popover" title="{{item.name}}" data-ajaxonload="/shop/{{item.id }}/form.html"><img src="{{ item.front.url }}" alt="Image" class="img-responsive"></a>
                             </div>
 
                     {% if forloop.last or forloop.counter|divisibleby:"4" %}

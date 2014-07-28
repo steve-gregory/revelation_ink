@@ -12,6 +12,7 @@ class AboutPagePhoto(models.Model):
   name = models.CharField(max_length=128)
   weight = models.IntegerField(default=0)
   image = models.ImageField(upload_to='website/about_page_photos')
+  text_field = models.TextField()
   visible = models.BooleanField(default=True)
 
   def __unicode__(self):
